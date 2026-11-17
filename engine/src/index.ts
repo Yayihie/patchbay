@@ -5,4 +5,8 @@ export { buildGraph, topoOrder, GraphError } from "./graph/graph.js";
 export type { WireGraph } from "./graph/graph.js";
 export { Store, patchbayHome } from "./storage/db.js";
 export { Executor } from "./run/executor.js";
+export { Enforcer, AgentRunner, sha256 } from "./agents/runner.js";
+export type { Resolution, Refusal, AgentIntent, AgentRunDeps } from "./agents/runner.js";
+export { Vault } from "./vault/vault.js";
+export { chat } from "./providers/index.js";
 export type { RunResult, RunContext, ExecutableAction } from "./run/executor.js";

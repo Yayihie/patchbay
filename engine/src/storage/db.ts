@@ -115,5 +115,60 @@ export class Store {
     return row;
   }
 
+  recordAudit(entry: {
+    runId: string; step: number; tileId: string; tool?: string;
+    argsHash?: string; argsRedacted?: unknown; decision: string; approver?: string;
+    outcome: string; detail?: string; risk?: string;
+  }): void {
+    this.db.prepare(
+      `INSERT INTO audit(run_id,step,tile_id,tool,args_hash,args_redacted_json,decision,approver,
+                        started_at,finished_at,outcome,detail)
+       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .run(entry.runId, entry.step, entry.tileId, entry.tool ?? null, entry.argsHash ?? null,
+           entry.argsRedacted === undefined ? null : JSON.stringify(entry.argsRedacted),
+           entry.decision, entry.approver ?? null, new Date().toISOString(),
+           new Date().toISOString(), entry.outcome, entry.detail ?? null);
+  }
+
+  auditForRun(runId: string): { step: number; tile_id: string; decision: string; outcome: string }[] {
+    return this.db.prepare(
+      "SELECT step,tile_id,decision,outcome FROM audit WHERE run_id=? ORDER BY step").all(runId) as
+      { step: number; tile_id: string; decision: string; outcome: string }[];
+  }
+
+  writeMemory(agentTileId: string, boardId: string, content: string, maxEntries = 500): void {
+    this.db.prepare("INSERT INTO memory(id,agent_tile_id,board_id,content,created_at) VALUES(?,?,?,?,?)")
+      .run(crypto.randomUUID(), agentTileId, boardId, content, new Date().toISOString());
+    // LRU trim: oldest first
+    this.db.prepare(
+      `DELETE FROM memory WHERE agent_tile_id=? AND id NOT IN (
+         SELECT id FROM memory WHERE agent_tile_id=? ORDER BY rowid DESC LIMIT ?)`)
+      .run(agentTileId, agentTileId, maxEntries);
+  }
+
+  readMemory(agentTileId: string): string[] {
+    return (this.db.prepare(
+      "SELECT content FROM memory WHERE agent_tile_id=? ORDER BY rowid DESC")
+      .all(agentTileId) as { content: string }[]).map((r) => r.content);
+  }
+
+  createTable(boardId: string, name: string, columns: { name: string; type: string }[]): string {
+    const id = crypto.randomUUID();
+    this.db.prepare("INSERT INTO tables(id,board_id,name,schema_json) VALUES(?,?,?,?)")
+      .run(id, boardId, name, JSON.stringify(columns));
+    return id;
+  }
+
+  insertTableRow(tableId: string, data: unknown): void {
+    const now = new Date().toISOString();
+    this.db.prepare("INSERT INTO table_rows(id,table_id,data_json,created_at,updated_at) VALUES(?,?,?,?,?)")
+      .run(crypto.randomUUID(), tableId, JSON.stringify(data), now, now);
+  }
+
+  readTableRows(tableId: string): unknown[] {
+    return (this.db.prepare("SELECT data_json FROM table_rows WHERE table_id=? ORDER BY created_at")
+      .all(tableId) as { data_json: string }[]).map((r) => JSON.parse(r.data_json));
+  }
+
   close(): void { this.db.close(); }
 }
