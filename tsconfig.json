@@ -2,6 +2,7 @@
   "files": [],
   "references": [
     { "path": "engine" },
-    { "path": "cli" }
+    { "path": "cli" },
+    { "path": "ui" }
   ]
 }
