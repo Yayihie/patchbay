@@ -1,0 +1,488 @@
+URL: https://dify.ai/
+LABEL: Dify home
+CHARS: 9587
+
+Dify - AI Agent Management Platform That Puts You in Control
+
+Dify is Recognized in the 2026 Gartner® Magic Quadrant™ for AI Agent Management Platforms as a Niche Player.
+
+Learn More
+
+Products
+
+Solutions
+
+Docs
+
+Pricing
+
+Company
+
+Contact Sales
+
+Log in
+
+Get Started
+
+EN
+
+Menu
+
+Get Back
+
+Products
+
+Solutions
+
+Docs
+
+Pricing
+
+Company
+
+Products
+
+Get Back
+
+Build
+
+Workflow Studio
+
+Visual Builder for Agentic Workflows
+
+Knowledge Pipeline
+
+Prepare searchable knowledge bases
+
+Marketplace
+
+Explore Dify tools, models, and integrations
+
+Deploy
+
+Dify Cloud
+
+Ready to use. Build AI agents fast
+
+Dify Enterprise
+
+Enterprise-grade security, governance, and private deployment
+
+Dify Community Edition
+
+Open source, with self-hosted deployment and management
+
+Solutions
+
+Get Back
+
+Assessment & Testing
+
+Scale item generation with multi-stage review
+
+Manufacturing & Industrial
+
+One private platform across every business unit
+
+Consumer Goods & FMCG
+
+Let business teams build their own Agents
+
+Professional Services & Audit
+
+Drive audit automation with Agents and RPA
+
+Logistics & Supply Chain
+
+Grow business volume without proportional cost growth
+
+Public Sector
+
+Deploy locally and share securely across institutions
+
+Banking & Financial Services
+
+Unify business teams on one AI platform
+
+Pharma & Life Sciences
+
+Governed expert-level AI assistants
+
+Semiconductor
+
+Orchestrate AI on top of proprietary LLMs
+
+Education
+
+One knowledge base for multi-campus services
+
+Internet & Media
+
+Move from pilot projects to everyday productivity
+
+Company
+
+Get Back
+
+About Us
+
+Blog
+
+Join Us
+
+Language
+
+Get Back
+
+English
+
+简体中文
+
+日本語
+
+한국어
+
+Deutsch
+
+English
+
+简体中文
+
+日本語
+
+한국어
+
+Deutsch
+
+AI Agent
+
+Management Platform
+
+that
+Puts You in Control
+
+Build an agent with one team, and scale across the enterprise. Choose your models and deployment environment, manage access, and monitor agent activity in real time.
+
+Trusted
+by Builders &
+Enterprises Worldwide
+
+What makes Dify stand out is its ability to democratize AI agent development. By combining powerful AI/ML capabilities on a no-code platform, its rapid deployment and intuitive interface make it highly accessible even for beginners, significantly accelerating citizen development.
+
+What makes Dify stand out is its ability to democratize AI agent development. By combining powerful AI/ML capabilities on a no-code platform, its rapid deployment and intuitive interface make it highly accessible even for beginners, significantly accelerating citizen development.
+
+In this climate of perpetual beta, tools enabling rapid validation aren't just helpful, they're existential. For Volvo Cars, strategically navigating this AI frontier, this is where Dify delivers indispensable value.
+
+In this climate of perpetual beta, tools enabling rapid validation aren't just helpful, they're existential. For Volvo Cars, strategically navigating this AI frontier, this is where Dify delivers indispensable value.
+
+Dify's intuitive interface allows our teams to rapidly design and deploy complex natural language processing pipelines, enabling us to improve the quality of our assessment products while reducing cost and time to market.
+
+Dify's intuitive interface allows our teams to rapidly design and deploy complex natural language processing pipelines, enabling us to improve the quality of our assessment products while reducing cost and time to market.
+
+In this climate of perpetual beta, tools enabling rapid validation aren't just helpful, they're existential. For Volvo Cars, strategically navigating this AI frontier, this is where Dify delivers indispensable value.
+
+What makes Dify stand out is its ability to democratize AI agent development. By combining powerful AI/ML capabilities on a no-code platform, its rapid deployment and intuitive interface make it highly accessible even for beginners, significantly accelerating citizen development.
+
+Dify's intuitive interface allows our teams to rapidly design and deploy complex natural language processing pipelines, enabling us to improve the quality of our assessment products while reducing cost and time to market.
+
+Deploy
+Dify Your Way.
+
+Managed
+
+Dify Cloud
+
+Hosted by Dify. Build, test, and launch AI apps without managing infrastructure.
+
+Zero infrastructure setup
+
+Managed workspace for apps, workflows, agents, and knowledge bases
+
+Publish as web app or API
+
+Scale plans as your team, storage, logs, and usage grow
+
+Learn more →
+
+Get Started
+
+Self-hosted
+
+Dify Enterprise
+
+Self-host or run in your VPC. Built for procurement, security, and audit.
+
+SSO / SAML, RBAC, audit logs
+
+SOC 2 Type II + ISO 27001
+
+Helm chart for K8s deployments
+
+Dedicated CSM & 24/7 support
+
+Learn more →
+
+Contact Sales
+
+Open-Source
+
+Community Edition
+
+Source-available. Self-host with Docker.
+161K+
+stars on GitHub.
+
+Apache-2.0-derivative license
+
+Single-command Docker deploy
+
+Full agent runtime + workflow editor
+
+Community Discord & forum support
+
+161K
+
+View on GitHub
+
+Everything
+Teams Need to
+Build and Ship AI Apps.
+
+Turn Prompt Logic Into a
+
+Visible
+Execution Path.
+
+Use visual building blocks and AI prompts to define how an app thinks, retrieves data, makes decisions, uses tools, asks for human input, and completes tasks. The logic stays visible, so teams can test, debug, deploy, and hand it off with confidence.
+
+Explore Workflow Studio
+→
+
+Build Agents with
+Skills
+,
+Tools
+, and
+Knowledge
+
+Build an agent by chatting or configuring it manually. Use it as an app, embed it into a website, or reuse it as an agent node inside a workflow.
+
+Learn How to Build an Agent
+→
+
+Prepare the
+
+Context
+Your AI Apps Rely On.
+
+Create repeatable pipelines for files, websites, online documents, and drives. Extract, clean, chunk, index, and test retrieval before the knowledge base is connected to agents or workflows.
+
+Explore Knowledge Pipeline
+→
+
+Bring Your AI Stack into
+
+One Workspace
+.
+
+Install model providers, tools, data sources, and MCP integrations from the Marketplace or define your own. Teams can reuse approved plugins across apps instead of wiring each project from scratch.
+
+Visit the Marketplace
+→
+
+Ship the
+
+Same Logic
+as an App, API, or Tool.
+
+Publish Dify apps as hosted experiences, API endpoints, embeds, or MCP-compatible tools. Use logs, feedback, annotations, latency, and usage data to understand what happened and improve the app over time.
+
+See Publish Options
+→
+
+←
+Workflow
+
+←
+Agent
+
+←
+Knowledge Pipeline
+
+←
+Plugins
+
+←
+Publish & Monitor
+
+Everything
+Teams Need to
+Build and Ship AI Apps.
+
+Workflow
+
+Turn Prompt Logic Into a
+
+Visible
+Execution Path.
+
+Use visual building blocks and AI prompts to define how an app thinks, retrieves data, makes decisions, uses tools, asks for human input, and completes tasks. The logic stays visible, so teams can test, debug, deploy, and hand it off with confidence.
+
+Explore Workflow Studio
+→
+
+Agent
+
+Build Agents with
+Skills
+,
+Tools
+, and
+Knowledge
+
+Build an agent by chatting or configuring it manually. Use it as an app, embed it into a website, or reuse it as an agent node inside a workflow.
+
+Learn How to Build an Agent
+→
+
+Knowledge Pipeline
+
+Prepare the
+
+Context
+Your AI Apps Rely On.
+
+Create repeatable pipelines for files, websites, online documents, and drives. Extract, clean, chunk, index, and test retrieval before the knowledge base is connected to agents or workflows.
+
+Explore Knowledge Pipeline
+→
+
+Plugins
+
+Bring Your AI Stack into
+
+One Workspace
+.
+
+Install model providers, tools, data sources, and MCP integrations from the Marketplace or define your own. Teams can reuse approved plugins across apps instead of wiring each project from scratch.
+
+Visit the Marketplace
+→
+
+Publish & Monitor
+
+Ship the
+
+Same Logic
+as an App, API, or Tool.
+
+Publish Dify apps as hosted experiences, API endpoints, embeds, or MCP-compatible tools. Use logs, feedback, annotations, latency, and usage data to understand what happened and improve the app over time.
+
+See Publish Options
+→
+
+Dify is Recognized in the 2026 Gartner® Magic Quadrant
+™
+for AI Agent Management Platforms as a Niche Player.
+
+Learn More
+
+Gartner does not endorse any company, vendor, product or service depicted in its publications, and does not advise technology users to select only those vendors with the highest ratings or other designation. Gartner publications consist of the opinions of Gartner's business and technology insights organization and should not be construed as statements of fact. Gartner disclaims all warranties, expressed or implied, with respect to this publication, including any warranties of merchantability or fitness for a particular purpose.
+
+Convert Your AI Vision into Immediate
+Business Value
+.
+
+Integrate your operations, data, and workflows into one seamless foundation. Eliminate the overhead between idea and execution, and launch dependable AI solutions that deliver returns from day one.
+
+Get Started
+
+Contact Sales →
+
+Resources
+
+Docs
+
+Blog
+
+Events
+
+Support
+
+Roadmap
+
+Company
+
+Talk to Us
+
+Join Us
+
+Brand Guidelines
+
+Programs
+
+Education
+
+Partner
+
+Terms & Policies
+
+Terms of Service
+
+Privacy Policy
+
+Cookie Policy
+
+Brand Usage Terms
+
+Data Protection Agreement
+
+Marketplace Agreement
+
+End User License Agreement
+
+Resources
+
+Docs
+
+Blog
+
+Events
+
+Support
+
+Roadmap
+
+Company
+
+Talk to Us
+
+Join Us
+
+Brand Guidelines
+
+Programs
+
+Education
+
+Partner
+
+Terms & Policies
+
+Terms of Service
+
+Privacy Policy
+
+Cookie Policy
+
+Brand Usage Terms
+
+Data Protection Agreement
+
+Marketplace Agreement
+
+End User License Agreement
+
+Unlock Agentic AI with Dify. Develop, deploy, and manage autonomous agents, RAG pipelines, and more for teams at any scale effortlessly.
+
+© 2026 LangGenius, Inc.

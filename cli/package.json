@@ -1,0 +1,9 @@
+{
+  "name": "@patchbay/cli",
+  "version": "0.1.0",
+  "type": "module",
+  "license": "MIT",
+  "bin": { "patchbay": "dist/index.js" },
+  "scripts": { "test": "vitest run" },
+  "dependencies": { "@patchbay/engine": "0.1.0" }
+}

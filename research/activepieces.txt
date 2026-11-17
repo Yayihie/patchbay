@@ -1,0 +1,1085 @@
+URL: https://activepieces.com/
+LABEL: Activepieces home
+CHARS: 11046
+
+Activepieces: unify your team's AI
+
+Skip to content
+
+Product
+
+Solutions
+
+Enterprise
+
+Pricing
+
+Docs
+
+Open app
+
+Talk to sales
+
+AI Agents with enterprise control
+
+Chat, agents, flows, tables, and 770+ apps in one workspace, so your whole team works with AI in the tools they already use.
+
+Use in your AI
+
+Talk to sales
+
+Free plan, no credit card required
+
+Chat
+
+Agents
+
+Flows
+
+Runs
+
+Tables
+
+Connections
+
+Templates
+
+MCP server
+
+Agents
+
+New agent
+
+Search agents
+
+All teams
+
+23 agents
+
+Support triage
+
+Ran 4 min ago
+
+Answers the questions you get every day and escalates anything that needs a human.
+
++2
+
+Invoice intake
+
+Ran 20 min ago
+
+Pulls invoices out of the inbox, matches them to the PO, files them for approval.
+
++1
+
+Inbound lead routing
+
+Ran 2 hours ago
+
+Researches every demo request, scores it, and hands it to an owner within the minute.
+
++3
+
+Claude
+
+Gemini
+
+Audit log
+
+MCP servers
+
+Cursor
+
+ChatGPT
+
+Agents
+
+Approvals
+
+gemini.google.com
+
+New chat
+
+Gems
+
+Recent
+
+Settings
+
+Gemini
+
+Pro
+
+Tool
+
+Spend
+
+Compare plans
+
+Summarise
+
+Export
+
+Ask Gemini
+
+calder-prod — postgres
+
+calder-prod
+
+public
+
+customers
+
+subscriptions
+
+invoices
+
+api_keys
+
+audit_log
+
+Run
+
+Query 1
+
+select
+
+email, plan, mrr, last_seen
+
+from
+
+customers
+
+where
+
+mrr > 0;
+
+email
+
+plan
+
+mrr
+
+last_seen
+
+team
+
+$1,240
+
+free
+
+$380
+
+team
+
+$2,900
+
+free
+
+$120
+
+scale
+
+$640
+
+free
+
+$95
+
+312 rows
+
+84 ms
+
+connected as agent_svc
+
+dashboard.stripe.com
+
+Test mode
+
+Home
+
+Payments
+
+Customers
+
+Billing
+
+$4,280.00
+
+Lifetime volume
+
+Customer since
+
+Payment method
+
+MRR
+
+$1,240.00
+
+Payments
+
+$1,240.00
+
+Succeeded
+
+$1,240.00
+
+Succeeded
+
+$980.00
+
+Succeeded
+
+$980.00
+
+Failed
+
+$980.00
+
+Succeeded
+
+middleware.ts — calder-platform
+
+middleware.ts
+
+72
+
+73
+
+74
+
+75
+
+76
+
+77
+
+⌘Y
+
+⌘N
+
+78
+
+79
+
+80
+
+Accept
+
+Reject
+
+⌘⏎
+
+CHAT
+
+COMPOSER
+
+middleware.ts
+
+middleware.ts
+
+Apply
+
+Ask followup
+
+claude.ai
+
+New chat
+
+Recents
+
+Access review
+
+Document · 4 min read
+
+Reply to Claude…
+
+Chat
+
+Cowork
+
+Opus 5
+
+Preview
+
+Code
+
+github.com
+
+calder
+
+/
+
+platform
+
+Private
+
+#482
+
+Open
+
+claude[bot]
+
+wants to merge 2 commits
+
+Conversation
+
+Commits
+
+Checks
+
+Files changed
+
+src/auth/middleware.ts
+
++12
+
+−4
+
+src/auth/verify.ts
+
++31
+
+−8
+
+All checks have passed
+
+4 successful checks
+
+Merge
+
+chatgpt.com
+
+New chat
+
+Search chats
+
+Library
+
+Chats
+
+ChatGPT
+
+Ask anything
+
+Your
+
+team
+
+already
+
+works
+
+with
+
+AI.
+
+Nobody's tracking what they access, cost, or do.
+
+The enterprise AI ecosystem
+
+“Activepieces was instrumental in
+helping us become an AI-first organization.
+It enabled rapid experimentation across teams.”
+
+Shawn Lim
+
+VP of Platform & AI, Funding Societies
+
+SME digital financing, 500+ employees
+
+100+
+
+Automation flows
+
+¼ year
+
+Of manual work saved
+
+500+
+
+Employees empowered
+
+Your first flow can ship this afternoon.
+
+Start with the one job your team keeps redoing by hand. No card to begin, and it runs on our cloud or your own servers.
+
+Start building
+
+Talk to sales
+
+Agents that get the job done
+
+Describe a job in plain words. An agent takes it end to end across your tools, checking in only where it counts.
+
+Process the invoice in my inbox.
+
+Agent
+
+Found the invoice
+
+· Maple · $4,200
+
+Matched the PO
+
+· #PO-1183
+
+Checked the budget
+
+· Under Q3
+
+Payment · Maple Studio
+
+Amount
+
+$4,200.00
+
+Invoice
+
+#INV-2043
+
+Due
+
+Jul 30
+
+Pay $4,200 to Maple?
+
+Approve payment
+
+Edit
+
+Scheduled · logged in QuickBooks
+
+Give the agent a task…
+
+Plain words, no prompt engineering
+
+Say what you want done. The agent works out the steps, the order, and what to open.
+
+It picks its own tools
+
+Every app you have connected, and any MCP server you point it at, is fair game.
+
+Approval where it counts
+
+Gate the steps that touch money, customers, or production, and let the rest run.
+
+Simple by default. Deep on demand.
+
+Chat drafts most of your flows. The builder gives you full control when they get hard.
+
+Live
+
+Test
+
+Webhook
+
+New submission
+
+Trigger
+
+OpenAI
+
+Classify intent
+
+Hot lead
+
+Slack
+
+Notify sales
+
+Just browsing
+
+HubSpot
+
+Add to nurture
+
+All the depth you need.
+
+Branching, retries, waitpoints, subflows, error handling, human approvals.
+
+Code for the hardest step.
+
+Write TypeScript inline where your flow needs it. Keep the rest visual.
+
+Every app connects once.
+
+Connect an app once. Every flow, agent, and teammate can reach it.
+
+Everything you need to run this for the whole company.
+
+Projects
+
+Each team gets its own space, sealed off.
+
+Projects
+
+6 projects
+
+Growth
+
+14 members
+
+412k
+
+Revenue Ops
+
+9 members
+
+268k
+
+Support
+
+21 members
+
+191k
+
+Data Platform
+
+11 members
+
+154k
+
+Access Control
+
+Okta or Entra sign-in, roles to the permission.
+
+Sarah Chen
+
+[email protected]
+
+Admin
+
+Everything, including billing
+
+Editor
+
+Build and publish flows
+
+Viewer
+
+Read only
+
+Secret Managers
+
+Credentials stay in your own vault.
+
+Credentials
+
+HashiCorp Vault
+
+Stripe
+
+prod/stripe
+
+••••8f21
+
+HubSpot
+
+prod/hubspot
+
+••••4b0c
+
+Snowflake
+
+data/warehouse
+
+••••1d55
+
+Audit Logs
+
+Who did what and when, streamed to your SIEM in real time.
+
+Audit stream
+
+Splunk
+
+{
+
+"time"
+
+:
+
+"2026-09-02T10:03:41Z"
+
+,
+
+"actor"
+
+:
+
+"
+[email protected]
+"
+
+,
+
+"action"
+
+:
+
+"sso.configuration.updated"
+
+,
+
+"project"
+
+:
+
+"growth"
+
+,
+
+"change"
+
+: {
+
+"metadata_url"
+
+:
+
+"https://calder.okta.com/sso/saml"
+
+,
+
+"signing_cert"
+
+:
+
+"rotated"
+
+},
+
+"result"
+
+:
+
+"success"
+
+}
+
+AI Providers
+
+Bring your own keys and models.
+
+AI providers
+
+3 of 4
+
+Anthropic
+
+••••4c2a
+
+OpenAI
+
+••••91be
+
+AWS Bedrock
+
+eu-west-1
+
+Google Gemini
+
+Add key
+
+Reliability
+
+Runs resume from their last checkpoint, never from the start.
+
+Run #48,213
+
+2.44s
+
+Charge in Stripe
+
+1.20s
+
+Send the receipt
+
+0.38s
+
+Resumed from checkpoint
+
+Append to revenue sheet
+
+0.21s
+
+Notify the account owner
+
+0.12s
+
+Close the ticket
+
+0.09s
+
+Analytics
+
+See which teams build, and what actually runs.
+
+Runs
+
+1.28M
+
++18%
+
+Aug 5
+
+Aug 19
+
+Growth
+
+412k
+
+Revenue Ops
+
+268k
+
+Support
+
+191k
+
+Deployment Options
+
+Our cloud, your servers, or fully air-gapped.
+
+Deployment
+
+Same build
+
+Activepieces Cloud
+
+Managed, nothing to run
+
+Your infrastructure
+
+Docker or Kubernetes
+
+Air-gapped
+
+No outbound network
+
+Roll it out without losing control.
+
+Projects, SSO, roles, audit logs and your own secret manager are there from the first flow, on our cloud or your infrastructure.
+
+Start building
+
+Talk to sales
+
+“We needed a solution that could
+integrate our ecosystem and our internal data,
+without hosting it in the US.”
+
+Guillaume Durand
+
+Product Marketing Lead, Alan
+
+AI-powered health insurance, 700 employees
+
+300+
+
+Workflows deployed, from zero
+
+$500k+
+
+Saved annually
+
+6,300+
+
+Hours reclaimed
+
+770+ open-source pieces
+
+For the apps you already run, with a clear path for everything else.
+
+View all pieces
+
+Call any API
+
+Hit any REST or GraphQL endpoint using the HTTP piece, with auth and pagination handled.
+
+Build it with AI
+
+Describe a step in plain English and AI writes it, or drop into code and write TypeScript.
+
+All open source
+
+Every piece is MIT-licensed, built by hundreds of contributors in the open.
+
+One workspace your team and your agents share.
+
+Chat
+
+Say what you want in plain words and it gets built.
+
+When a deal closes in HubSpot, add a row to Revenue and post it in #wins
+
+Here is the flow I built.
+
+Deal closed in HubSpot
+
+Add a row to Revenue
+
+Post to #wins in Slack
+
+Email the account owner
+
+MCP Server
+
+Claude and Cursor can run what you built.
+
+MCP server
+
+Live
+
+mcp.activepieces.com/v1
+
+create_invoice
+
+find_customer
+
+post_message
+
+Tables
+
+Data every flow and agent can read and write.
+
+Customers
+
+1,284 rows
+
+Verano Coffee
+
+Active
+
+$6,400
+
+Piera
+
+Trial
+
+$2,800
+
+Wren Labs
+
+Active
+
+$5,100
+
+Northaven
+
+Active
+
+$9,750
+
+Halcyon Press
+
+Trial
+
+$1,900
+
+Linden Freight
+
+Active
+
+$8,300
+
+Knowledge Base
+
+Your documents, searchable by every agent.
+
+refund window for annual plans
+
+3
+
+Refund policy
+
+Policies · updated Aug 28
+
+Enterprise order form
+
+Legal · updated Jul 14
+
+Support escalation ladder
+
+Runbooks · updated Aug 02
+
+Here's how it's going for the teams building with us.
+
+GitHub stars
+
+Contributors
+
+356
+
+“Connect apps, APIs and webhooks together to avoid menial tasks. It helps us do all of this at a much lower price.”
+
+Kevin Hu
+
+Trustpilot
+
+“The completely customizable and fluid builder is much better than Zapier. It took me under an hour to rebuild everything I had.”
+
+Christian D.
+
+G2
+
+“The modular way pieces are built, with MCP at its core, is genuinely how I see the future of the internet.”
+
+VK
+
+Vikranth K.
+
+G2
+
+“The visual designer is approachable for beginners but powerful enough for advanced users.”
+
+Mark D.
+
+G2
+
+“Once you get the hang of it, this thing is a powerhouse. It already handles the most critical automations in my daily operations.”
+
+Rida
+
+Trustpilot
+
+“As simple as Zapier but with the more advanced options of Make, and cheaper. That is my dream.”
+
+CA
+
+CaptainJamie
+
+Reddit, r/selfhosted
+
+“User-friendly, even for those without technical skills. Highly flexible and powerful, with options to add code when needed.”
+
+Giuseppe "Peps" C.
+
+G2
+
+“My experience has been nothing but positive. It stands out as not just an alternative, but in many ways a preferred choice.”
+
+Dennis Klappe
+
+Trustpilot
+
+“The easiest and most user friendly automation software I have used. It was extremely easy to set up flows and get automations running.”
+
+Patrick F.
+
+G2
+
+Questions, answered
+
+Can non-developers really build with this?
+
+Yes. Someone on your team describes what they need, and it gets built. To change it later, they can ask again or open the builder.
+
+What kinds of things will my team build?
+
+The recurring work every team has too much of. Reports that write themselves. Documents routed to the right person. Sales decks that pull the latest numbers. User research that schedules itself.
+
+Do we need a dedicated automation team?
+
+No. Each team builds what they need. Engineering stays on the hard problems instead of running a ticket queue.
+
+How does the cost hold up as more teams join?
+
+Unlimited flows on every plan. Logic inside a flow is free. You pay for how often flows actually run, and the per-run price drops as your volume grows.
+
+What will our security team ask about?
+
+The usual: single sign-on, granular role permissions, audit logs, encryption, and control over where the data lives. All of it's built in.
+
+Can we self-host?
+
+Yes. Run it with Docker or Kubernetes on your own infrastructure, or use our cloud, which runs in Frankfurt.
+
+Is Activepieces really open source?
+
+Yes. The core is MIT-licensed. Read the code, fork it, run your own version if you want to.
+
+Put your first automation to work.
+
+Start with one flow this afternoon, or bring the whole stack across. We've got you from here.
+
+Start building
+
+Talk to sales
+
+Free to start
+
+No credit card
+
+Open source
+
+Product
+
+Workflow Builder
+
+AI Agents
+
+Tables
+
+Chat
+
+Pricing
+
+Build
+
+Docs
+
+Pieces
+
+MCP
+
+Embed
+
+GitHub
+
+Business teams
+
+Marketing
+
+Sales
+
+Customer Support
+
+Operations
+
+Finance
+
+Technical teams
+
+Engineering
+
+IT
+
+Internal Tools
+
+OSS Developers
+
+Company
+
+Blog
+
+Resources
+
+Support forum
+
+Talk to sales
+
+Security
+
+OSS friends
+
+Backed company
+
+© 2026 Activepieces. All rights reserved.
+
+Terms
+
+Privacy
+
+Cookie settings

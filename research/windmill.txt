@@ -1,0 +1,935 @@
+URL: https://www.windmill.dev/
+LABEL: Windmill home
+CHARS: 10761
+
+Windmill | Code-first platform for workflows, apps and AI agents
+
+Windmill
+
+Platform
+
+Solutions
+
+Docs
+
+Pricing
+
+Case studies
+
+More
+
+Contact us
+
+Windmill cloud
+
+Open menu
+
+OSS
+
+Code-first platform for
+workflows, apps and AI agents
+
+Everyone builds with AI,
+engineers decide what ships
+.
+
+✓
+
+Open-source
+and easy to
+self-host
+
+✓
+
+Scripts and data pipelines in the same platform
+
+✓
+
+Full flexibility of code and Git-based collaboration
+
+✓
+
+Zero-ops infra powered by the
+fastest job orchestrator and workflow engine
+
+Try Windmill cloud
+
+Self-host in 3 mins
+→
+
+Go
+
+Windmill supports Go
+
+Rest / GraphQL
+
+Windmill supports Rest and GraphQL
+
+Trusted by 10,813 instances, including 300+ EE customers at scale:
+
+Build any internal software, and run it on Windmill
+
+Windmill lets you build scripts, workflows, apps, agents and data pipelines, and runs them on the
+fastest self-hostable orchestration engine
+.
+
+Scripts
+
+Workflows
+
+AI agents
+
+Data pipelines
+
+Apps
+
+Infrastructure
+
+reconcile_invoices.ts
+
+import
+
+{
+
+listInvoices
+
+,
+
+ledgerEntries
+
+}
+
+from
+
+"./finance"
+
+;
+
+export
+
+async
+
+function
+
+main
+
+(
+
+stripe
+
+:
+
+RT
+
+.
+
+Stripe
+
+,
+
+ledger
+
+:
+
+RT
+
+.
+
+Postgresql
+
+,
+
+since
+
+:
+
+string
+
+,
+
+dry_run
+
+=
+
+false
+
+) {
+
+const
+
+invoices
+
+=
+
+await
+
+listInvoices
+
+(
+
+stripe
+
+, {
+
+since
+
+});
+
+const
+
+booked
+
+=
+
+await
+
+ledgerEntries
+
+(
+
+ledger
+
+,
+
+since
+
+);
+
+const
+
+missing
+
+=
+
+invoices
+
+.
+
+filter
+
+((
+
+i
+
+) => !
+
+booked
+
+.
+
+has
+
+(
+
+i
+
+.
+
+id
+
+));
+
+return
+
+{
+
+checked
+
+:
+
+invoices
+
+.
+
+length
+
+,
+
+missing
+
+:
+
+missing
+
+.
+
+length
+
+};
+
+}
+
+/finance/reconcile_invoices
+
+Script
+
+Run
+
+stripe
+
+RT.Stripe
+
+/finance/stripe
+
+ledger
+
+RT.Postgresql
+
+/finance/ledger_db
+
+since
+
+string
+
+2026-09-01
+
+dry_run
+
+boolean
+
+Click Run to try it
+
+Scripts
+
+A function in any of 20+ languages becomes an API endpoint and a form. Windmill resolves its imports, locks versions at each deploy and installs from your private registries.
+
+TypeScript
+
+Python
+
+Go
+
+Rust
+
+Bash
+
+SQL
+
+PHP
+
+C#
+
+Java
+
+Ruby
+
+PowerShell
+
++11 languages →
+
+Workflows: Draw a DAG in the flow editor, or write it as code in Python or TypeScript, and call it as an API endpoint. Retries, approvals and parallel branches are built in.
+
+AI agents: Run on any of 12 providers, or on your own model behind an OpenAI-compatible endpoint. Your scripts and MCP servers become its tools.
+
+Data pipelines: Run DuckDB and Python steps on your own buckets, or import your dbt project as it is: Windmill runs it on your workers and tracks each model as an asset, with its lineage.
+
+Apps: A React or Svelte frontend whose backend is your existing scripts and workflows, each one a function the app calls. Share it with your teams, or embed it in your product.
+
+Infrastructure: Worker groups, autoscaling and instance settings are a YAML file, applied by the CLI or a Kubernetes operator. Self-host in your cloud or on-prem.
+
+In the Windmill UI or locally
+
+Build
+with AI directly in the Windmill UI
+, or locally from your editor and coding agent with the
+Windmill CLI
+or
+MCP
+. All of it lands in the same workspace.
+
+$
+
+npm install -g windmill-cli
+
+Self-hosting?
+Deploy with Docker or Kubernetes first
+.
+
+In the Windmill UI
+
+Locally
+
+D
+
+Development
+
+AI Sessions
+
+Script
+
+Workflow
+
+App
+
+AI agent
+
+Data pipeline
+
+Windmill
+
+On-call escalation
+
+Acting on
+
+/ops
+
+Page the on-call engineer when the queue backs up, and escalate to the lead after 15 minutes.
+
+Ask followup
+
+claude-opus-5
+
+Preview
+
+Code
+
+/ops/oncall_escalation
+
+On-call escalation
+
+Test flow
+
+Deploy
+
+Building oncall_escalation
+
+Scope what each team can access
+
+Give each team its
+integrations
+,
+permissions
+,
+skills
+,
+MCP servers
+and
+custom tools
+, so its AI builds safely, with only the access it needs.
+
+Data
+
+/data
+
+Integrations
+
+Access
+
+Writer
+/data
+
+MCP
+
+Tools
+
+quality_checks
+
+Skills
+
+/sql-style
+
+Finance
+
+/finance
+
+Support
+
+/support
+
+Marketing
+
+/marketing
+
+Data
+
+/data
+
+Integrations
+
+Permissions
+
+MCP
+
+Tools
+
+Skills
+
+Stripe
+
+stripe
+
+Payments, payouts and invoices
+
+Connect
+
+Slack
+
+slack
+
+Messages and channels
+
+Connect
+
+Snowflake
+
+snowflake
+
+Data warehouse
+
+Connected
+
+HubSpot
+
+hubspot
+
+Contacts, companies and deals
+
+Connect
+
+Review before deploying to prod
+
+Changes are built in a
+fork of the workspace
+, like a branch. A deployer reviews the diff and the
+CI
+results,
+deploys
+to staging then prod, and each version stays one click away from a rollback.
+
+Fork
+
+Change
+
+Review
+
+Deploy
+
+Rollback
+
+Fork the workspace
+
+A fork copies the workspace, with its scripts, flows, apps, resources and data tables, into an isolated workspace on its own Git branch. Nothing done there touches staging.
+
+All
+
+Scripts
+
+Flows
+
+Apps
+
+Search Scripts, Flows & Apps
+
+New
+
+ops
+
+finance
+
+data
+
+On-call escalation
+
+/ops/oncall_escalation
+
+Edit
+
+Check queue depth
+
+/ops/check_queue_depth
+
+Edit
+
+Revenue pipeline
+
+/data/revenue_nightly
+
+Edit
+
+Support triage agent
+
+/support/triage_agent
+
+Edit
+
+Payouts dashboard
+Raw
+
+/finance/payouts_dashboard
+
+Edit
+
+Employee onboarding
+
+/ops/onboard_employee
+
+Edit
+
+prod
+
+staging
+
++ Workspace
+
++ Workspace fork
+
+Change it in the fork: Edit in the fork, with AI or by hand, and deploy to it with a message. The banner counts what is ahead of staging.
+
+Review and merge: A deployer reviews the diff of each changed item, answers the request and deploys it to staging.
+
+Promote to prod: From staging, the same items go to prod in one click, and git sync commits each deploy to your
+
+GitHub or
+GitLab repo.
+
+Roll back in a click: Each deployment keeps its version and message. Pick a previous one, see the diff, and redeploy it.
+
+See each run, and why it failed
+
+Windmill is also the
+runtime
+your apps, workflows and agents run on, so
+observability
+comes built in: each run keeps its inputs, logs and result, and a failure
+alerts
+the team with everything needed to fix it.
+
+Runs
+
+Inputs & logs
+
+Timeline
+
+Traces
+
+Metrics
+
+Service logs
+
+Audit logs
+
+Runs
+
+Each
+run
+of each script, flow and app, filterable by status, path and time. A failure
+alerts its team
+on Slack, Teams or by email.
+
+Runs
+
+Live
+
+Waiting for workers: 0
+
+All
+
+Within last 24 hours
+
+Filter runs...
+
+Duration
+
+Concurrency
+
+job duration (ms)
+
+7 jobs
+
+Duration
+
+Path
+
+Triggered by
+
+Ended 2m ago
+
+41.2s
+
+/data/revenue_nightly
+
+schedule
+
+Started 12s ago
+
+-
+
+/eng/backfill_orders
+
+rob
+
+Ended 3m ago
+
+2.3s
+
+/ops/oncall_escalation
+
+schedule
+
+Ended 5m ago
+
+6.8s
+
+/support/triage_agent
+
+webhook
+
+Ended 9m ago
+
+1.2s
+
+/finance/reconcile_invoices
+
+jane
+
+Ended 14m ago
+
+3.1s
+
+/marketing/sync_newsletter
+
+schedule
+
+Ended 16m ago
+
+0.9s
+
+/finance/get_payouts
+
+maya
+
+/data/revenue_nightly
+
+Failed after 41.2s
+
+Tag: data-heavy
+
+Inputs
+
+{ "day": "2026-09-30" }
+
+Result
+
+{ "error": "No active warehouse selected" }
+
+Logs
+
+Assets
+
+10:40:00
+Extract Stripe: 1,204,331 rows
+
+10:41:03
+Transform in DuckDB: done
+
+10:42:06
+Load to Snowflake
+
+error: No active warehouse selected
+
+Alert sent to #data on Slack
+
+Inputs, result and logs: Open a
+run
+to see what it received, what it returned or why it failed, its logs and its memory, then mark the failure resolved.
+
+Flow timeline: Each step of a
+flow
+on one time axis: what ran in parallel, how long each step waited for a worker, and how long it ran.
+
+Traces: The HTTP calls a job makes are captured as
+OpenTelemetry (OTEL)
+spans, with their status and timing, and exported to your own collector: Jaeger, Tempo or any OTLP backend.
+
+Queue and worker metrics: Concurrency and queue delay per worker tag, to see which group needs more workers. Also exported over
+OTEL
+and exposed to
+Prometheus
+.
+
+Service logs: The
+logs of each worker and server
+, searchable from the UI, with the errors of each host at a glance. Also written to stdout, so any log collector such as Fluentd can ship them.
+
+Audit logs:
+Who ran, changed or deleted what
+, and when, for each script, flow, resource and AI request. Also written to stdout, so any log collector such as Fluentd can ship them.
+
+Build on top of the fastest orchestrator in the industry
+
+From a single-node VPS to 1,000-node Kubernetes clusters,
+auto-scale
+on demand or isolate critical tasks with
+dedicated worker groups
+.
+
+See benchmarks
+
+10 long tasks
+
+40 lightweight tasks
+
+Strict enough for your platform team, invisible to the person building
+
+01
+
+Security
+
+Self-host on your own infrastructure
+
+SOC 2 Type II
+
+Your own workers and network
+
+Your own AI model providers
+
+02
+
+Governance
+
+SAML and SCIM
+
+Enterprise
+
+Permissions per folder and per group
+
+Audit log of every action
+
+Enterprise
+
+Approval steps inside workflows
+
+03
+
+Deployment
+
+Git sync
+
+Enterprise
+
+Forks and merge requests
+
+Dev, staging and prod
+
+Enterprise
+
+Deploy from GitHub or GitLab
+
+Enterprise
+
+“Windmill quickly became crucial at Photoroom. We self-hosted Windmill Enterprise Edition to run a large number of internal scripts and business-critical automations.”
+
+Eliot Andres
+
+Co-Founder & CTO, Photoroom
+
+“At Pave, we self-host Windmill Enterprise Edition to run 100+ scripts and 15+ crons. Our Windmill deployment interacts with half a dozen data stores to power all kinds of business-critical tasks and automations across several teams.”
+
+Lewis Ellis
+
+Staff Platform Engineer, Pave
+
+“Our platform per se is built entirely upon Windmill. It was one of the few products that allowed us the flexibility of integrating with our own third-party Python library and having a graphical user interface already pre-baked - that was the main selling point of Windmill for us.”
+
+BJ Maldonado
+
+Platform Manager, Panther Labs
+
+“At Investing.com, we use Windmill to orchestrate our AI workflows. The quick setup through Docker Compose and intuitive UI allowed us to get started immediately.”
+
+Yonathan Adest
+
+Chief Technology Officer, Investing.com
+
+“We actually use Windmill's job engine to do a lot of the heavy lifting for us. We schedule future jobs into Windmill's job engine to handle some drip hydration tasks for our demo platform.”
+
+Frederic Louks
+
+Demo Platform Product Manager, Zoom
+
+“Currently, we employ 9 apps, 20 flows, and 63 scripts in our daily operations. They all serve as the foundation for essential tasks, allowing users to independently manage their activities according to their specific needs.”
+
+Sindre Svendby
+
+Software Engineer, Motimate
+
+Build anything internal.
+
+Run it all on Windmill.
+
+Try Windmill cloud
+
+Self-host in 3 mins →
+
+Footer
+
+Backed by
+
+Product
+
+Pricing
+
+Cloud
+
+Hub
+
+Case studies
+
+Integrations
+
+Windmill AI
+
+GitHub
+
+S3
+
+Supabase
+
+Slack
+
+More integrations
+
+Resources
+
+Blog
+
+Documentation
+
+Changelog
+
+Roadmap
+
+llms.txt
+
+Company
+
+Jobs
+
+Brand
+
+Partners
+
+Help & Support
+
+OpenAPI
+
+GitHub Issues
+
+Discord
+
+Questions
+
+Legal
+
+Privacy Policy
+
+Terms of Service
+
+License Terms
+
+Made with passion in
+San Francisco and Paris.
+
+Windmill Labs is SOC 2 Type II compliant.
+
+© 2026 Windmill Labs, Inc. All rights reserved. 1111B S Governors Ave STE 6013, Dover, DE 19904, USA

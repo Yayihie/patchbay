@@ -1,0 +1,377 @@
+URL: https://www.langflow.org/
+LABEL: Langflow home
+CHARS: 3332
+
+Langflow | Low-code AI builder for agentic and RAG applications
+
+Langflow 1.13 just released!
+
+Docs
+
+Resources
+
+Use Cases
+
+Changelog
+
+Blog
+
+Newsletter
+
+Events
+
+Podcast
+
+Brand Kit
+
+Community
+
+GitHub
+
+Discord
+
+X
+
+YouTube
+
+LinkedIn
+
+Get Help
+
+Contact Us
+
+Community Help
+
+Professional Services
+
+Premier Support
+
+Download
+
+153k
+
+25k
+
+10k
+
+16k
+
+Stop fighting your tools
+
+Langflow is a powerful tool to build and deploy AI agents and MCP servers. It comes with batteries included and supports all major LLMs, vector databases and a growing library of AI tools.
+
+Get Started for Free
+
+Star on GitHub
+
+Input
+
+Model
+
+l3
+
+llama-3.2
+
+API Key
+
+Temperature
+
+0.5
+
+Precise
+
+Creative
+
+Used by leading AI development teams
+
+Ditch the Black Boxes
+
+Model
+
+l3
+
+llama-3.2
+
+Temperature
+
+0.5
+
+Precise
+
+Creative
+
+Response Length
+
+Short
+
+Medium
+
+Long
+
+Control the complexity
+
+Swap and compare
+
+Python under the hood
+
+Drag. Drop. Deploy.
+
+Don't let boilerplate code slow you down. Visual state flows, reusable components, and rapid iteration for you. Focus on creating AI magic.
+
+Limitless Control
+
+Use Python to customize anything and everything
+
+Run, Share and Collaborate.
+
+Choose from hundreds of pre-built flows and components
+
+Agents at your service
+
+Run a single or fleet of agents with access to all your components as tools
+
+Flow as an API
+
+Use a free, enterprise-grade cloud to deploy your app
+
+From Notebook to Production
+
+Getting your AI in front of real users shouldn’t be a headache.
+
+Deploy yourself or sign up for a free cloud account
+
+Deploy and scale on an enterprise-grade, secure cloud platform
+
+Same Langflow whether you’re using OSS or Cloud
+
+Airbyte
+
+Anthropic
+
+Azure
+
+Bing
+
+Composio
+
+Confluence
+
+Couchbase
+
+Evernote
+
+Github
+
+Glean
+
+Gmail
+
+Google Cloud
+
+Google Drive
+
+Groq
+
+Supa
+
+HuggingFace
+
+Airbyte
+
+Anthropic
+
+Azure
+
+Bing
+
+Composio
+
+Confluence
+
+Couchbase
+
+Evernote
+
+Github
+
+Glean
+
+Gmail
+
+Google Cloud
+
+Google Drive
+
+Groq
+
+Supa
+
+HuggingFace
+
+Langchain
+
+Meta
+
+Reddis
+
+Milvus
+
+Mistral
+
+MongoDB
+
+Notion
+
+NVIDIA
+
+Ollama
+
+Perplexity
+
+Weaviate
+
+Serper
+
+Qdrant
+
+Serp API
+
+Slack
+
+Supa
+
+Langchain
+
+Meta
+
+Reddis
+
+Milvus
+
+Mistral
+
+MongoDB
+
+Notion
+
+NVIDIA
+
+Ollama
+
+Perplexity
+
+Weaviate
+
+Serper
+
+Qdrant
+
+Serp API
+
+Slack
+
+Supa
+
+Datastax
+
+Amazon Bedrock
+
+Tavily
+
+Upstash
+
+Vectara
+
+Wikipedia
+
+Wolfram Alpha
+
+Yahoo! Finance
+
+Zap
+
+MeriTalk
+
+Pinecone
+
+Cassandra
+
+Unstructured
+
+OpenAI
+
+Crew AI
+
+Datastax
+
+Amazon Bedrock
+
+Tavily
+
+Upstash
+
+Vectara
+
+Wikipedia
+
+Wolfram Alpha
+
+Yahoo! Finance
+
+Zap
+
+MeriTalk
+
+Pinecone
+
+Cassandra
+
+Unstructured
+
+OpenAI
+
+Crew AI
+
+Choose from hundreds of data sources, models, or vector stores.
+
+Connect your existing tools
+
+Jonathan Blomgren
+
+Studios Director, BetterUp
+
+“Langflow lets us take complex product ideas and quickly bring them to life through visual flows that anyone can understand.”
+
+Jan Schummers
+
+Sr. Software Engineer, WinWeb
+
+“Langflow has transformed our RAG application development, letting us focus more on creativity and less on complexity.”
+
+Brendon Geils
+
+CEO, Athena Intelligence
+
+“Langflow has completely transformed the way we iterate and deploy AI workflows.”
+
+Create your first flow
+
+Join thousands of developers accelerating their AI workflows. Start your first Langflow project now.
+
+Get Started for Free
+
+Star on GitHub
+
+153k
+
+25k
+
+10k
+
+16k
+
+© 2026. All rights reserved
+
+·
+
+Manage Privacy Choices

@@ -1,0 +1,1205 @@
+URL: https://n8n.io/
+LABEL: n8n home
+CHARS: 8148
+
+AI Workflow Automation Platform - n8n
+
+Meet Nod, an open-source personal agent from n8n Labs.
+
+Learn more →
+
+n8n.io
+
+Product
+
+Use cases
+
+Docs
+
+Community
+
+Enterprise
+
+Pricing
+
+Sign in
+
+Get started
+
+Product
+
+Use cases
+
+Docs
+
+Community
+
+Enterprise
+
+Pricing
+
+See
+llms.txt
+for all machine-readable content.
+
+Build the agent. Understand its workflow.
+
+Build
+
+the
+
+agent.
+
+Understand
+
+its
+
+w
+
+o
+
+r
+
+k
+
+f
+
+l
+
+o
+
+w
+
+.
+
+n8n is the platform for agents and workflows you can follow.
+Open any step, see what it does, and explain to anyone who runs it.
+
+Get Started
+
+Talk to sales
+
+When a refund request comes in, look up the order. Then ask me in Slack whether to refund it or open a ticket.
+
+Process invoice
+
+Knowledge assistant
+
+Daily News Digest
+
+Refund requested
+
+R
+
+e
+
+f
+
+u
+
+n
+
+d
+
+r
+
+e
+
+q
+
+u
+
+e
+
+s
+
+t
+
+e
+
+d
+
+Lookup the order
+
+L
+
+o
+
+o
+
+k
+
+u
+
+p
+
+t
+
+h
+
+e
+
+o
+
+r
+
+d
+
+e
+
+r
+
+Investigate the claim
+
+I
+
+n
+
+v
+
+e
+
+s
+
+t
+
+i
+
+g
+
+a
+
+t
+
+e
+
+t
+
+h
+
+e
+
+c
+
+l
+
+a
+
+i
+
+m
+
+Parse the verdict
+
+P
+
+a
+
+r
+
+s
+
+e
+
+t
+
+h
+
+e
+
+v
+
+e
+
+r
+
+d
+
+i
+
+c
+
+t
+
+Ask for approval on Slack
+
+A
+
+s
+
+k
+
+f
+
+o
+
+r
+
+a
+
+p
+
+p
+
+r
+
+o
+
+v
+
+a
+
+l
+
+o
+
+n
+
+S
+
+l
+
+a
+
+c
+
+k
+
+Approved?
+
+A
+
+p
+
+p
+
+r
+
+o
+
+v
+
+e
+
+d
+
+?
+
+Process refund
+
+P
+
+r
+
+o
+
+c
+
+e
+
+s
+
+s
+
+r
+
+e
+
+f
+
+u
+
+n
+
+d
+
+Open ticket
+
+O
+
+p
+
+e
+
+n
+
+t
+
+i
+
+c
+
+k
+
+e
+
+t
+
+Confirm to customer
+
+C
+
+o
+
+n
+
+f
+
+i
+
+r
+
+m
+
+t
+
+o
+
+c
+
+u
+
+s
+
+t
+
+o
+
+m
+
+e
+
+r
+
+Record refund in database
+
+R
+
+e
+
+c
+
+o
+
+r
+
+d
+
+r
+
+e
+
+f
+
+u
+
+n
+
+d
+
+i
+
+n
+
+d
+
+a
+
+t
+
+a
+
+b
+
+a
+
+s
+
+e
+
+Classify reason for refund
+
+C
+
+l
+
+a
+
+s
+
+s
+
+i
+
+f
+
+y
+
+r
+
+e
+
+a
+
+s
+
+o
+
+n
+
+f
+
+o
+
+r
+
+r
+
+e
+
+f
+
+u
+
+n
+
+d
+
+Route by reason
+
+R
+
+o
+
+u
+
+t
+
+e
+
+b
+
+y
+
+r
+
+e
+
+a
+
+s
+
+o
+
+n
+
+Get order items
+
+G
+
+e
+
+t
+
+o
+
+r
+
+d
+
+e
+
+r
+
+i
+
+t
+
+e
+
+m
+
+s
+
+Email win-back discount
+
+E
+
+m
+
+a
+
+i
+
+l
+
+w
+
+i
+
+n
+
+-
+
+b
+
+a
+
+c
+
+k
+
+d
+
+i
+
+s
+
+c
+
+o
+
+u
+
+n
+
+t
+
+Queue a return pickup
+
+Q
+
+u
+
+e
+
+u
+
+e
+
+a
+
+r
+
+e
+
+t
+
+u
+
+r
+
+n
+
+p
+
+i
+
+c
+
+k
+
+u
+
+p
+
+File QA ticket
+
+F
+
+i
+
+l
+
+e
+
+Q
+
+A
+
+t
+
+i
+
+c
+
+k
+
+e
+
+t
+
+Merge paths
+
+M
+
+e
+
+r
+
+g
+
+e
+
+p
+
+a
+
+t
+
+h
+
+s
+
+Add to the refunds report
+
+A
+
+d
+
+d
+
+t
+
+o
+
+t
+
+h
+
+e
+
+r
+
+e
+
+f
+
+u
+
+n
+
+d
+
+s
+
+r
+
+e
+
+p
+
+o
+
+r
+
+t
+
+Publish refund-closed event
+
+P
+
+u
+
+b
+
+l
+
+i
+
+s
+
+h
+
+r
+
+e
+
+f
+
+u
+
+n
+
+d
+
+-
+
+c
+
+l
+
+o
+
+s
+
+e
+
+d
+
+e
+
+v
+
+e
+
+n
+
+t
+
+Claude Sonnet 4.6
+
+C
+
+l
+
+a
+
+u
+
+d
+
+e
+
+S
+
+o
+
+n
+
+n
+
+e
+
+t
+
+4
+
+.
+
+6
+
+Read the refund policy
+
+R
+
+e
+
+a
+
+d
+
+t
+
+h
+
+e
+
+r
+
+e
+
+f
+
+u
+
+n
+
+d
+
+p
+
+o
+
+l
+
+i
+
+c
+
+y
+
+Check order history
+
+C
+
+h
+
+e
+
+c
+
+k
+
+o
+
+r
+
+d
+
+e
+
+r
+
+h
+
+i
+
+s
+
+t
+
+o
+
+r
+
+y
+
+Read past tickets
+
+R
+
+e
+
+a
+
+d
+
+p
+
+a
+
+s
+
+t
+
+t
+
+i
+
+c
+
+k
+
+e
+
+t
+
+s
+
+Track the delivery
+
+T
+
+r
+
+a
+
+c
+
+k
+
+t
+
+h
+
+e
+
+d
+
+e
+
+l
+
+i
+
+v
+
+e
+
+r
+
+y
+
+Click here
+
+Trusted by Fortune 500 companies to build smarter workflows.
+
+Tom, IT
+
+Cécile, Security
+
+Konsti, DevOps
+
+Alicia, Sales
+
+How Tom automated new user onboarding
+
+New hires get instant access to Slack, Jira, Notion, and more, all in one workflow.
+
+See how Tom did it
+
+How Cécile automated threat investigation
+
+Suspicious indicators are checked against multiple security tools, combined into one report, and summarized by AI, all in one workflow.
+
+See how Cécile did it
+
+How Konsti automated alert triage
+
+When an alert comes in, an AI agent investigates it, then routes it by severity to the right people and tools, all in one workflow.
+
+See how Konsti did it
+
+How Alicia automated lead qualification
+
+New messages are answered and qualified by an AI agent, the lead record is kept up to date, and a reply goes out, all in one workflow.
+
+See how Alicia did it
+
+Top 50 Github project with 210.9k stars
+
+Rated 4.7/5 from real users on G2
+
+Join 250k+ developers in our community
+
+The USB-C for your AI stack
+
+Connect n8n to just about any tool you can think of. 500+ native integrations.
+Any API via HTTP. Any agent or coding assistant via MCP.
+
+See + understand
++ trust your agents
+
+Connect any model, see every decision, and add human approval when needed.
+
+Full visibility across agents
+
+Watch agents work live, or open any past run, all inside the same workflow.
+
+Put rules around AI actions
+
+Use structured inputs and outputs for AI actions. Add human-in-the-loop approvals and rule-based automation.
+
+Self-host your AI stack
+
+Deploy on-prem or with Docker to keep your data in your own environment. Access the source code on GitHub, or use the hosted version.
+
+Full visibility across agents
+
+Watch agents work live, or open any past run, all inside the same workflow.
+
+Put rules around AI actions
+
+Use structured inputs and outputs for AI actions. Add human-in-the-loop approvals and rule-based automation.
+
+Self-host your AI stack
+
+Deploy on-prem or with Docker to keep your data in your own environment. Access the source code on GitHub, or use the hosted version.
+
+Built by you +
+readable by anyone
+
+Create workflows anyone can follow with a visual builder and drop into code whenever you need it.
+
+Documentation, built in
+
+The workflow is the documentation. No separate docs. No handover write-ups.
+
+Recover in one step
+
+Spot errors at a glance, Re-run just the step that broke.
+
+Every change, tracked
+
+Version history shows who changed what, and when.
+
+Documentation, built in
+
+The workflow is the documentation. No separate docs. No handover write-ups.
+
+Recover in one step
+
+Spot errors at a glance, Re-run just the step that broke.
+
+Every change, tracked
+
+Version history shows who changed what, and when.
+
+Move fast +
+break nothing
+
+Shipped months ago. Still in control.
+Feels good, doesn't it?
+
+Move fast.
+Replay a past run or mock the data. Skip waiting on external systems.
+
+Break nothing.
+See
+
+exactly what happened in the logs. No digging required.
+
+Now imagine that across your whole company.
+
+Enterprise-ready for teams
+of any size
+
+Scale AI without losing control. Security, governance, and handoff built in.
+
+Explore enterprise
+
+Talk to Sales
+
+Security + control
+
+Fully on-prem option, SSO SAML, and LDAP, encrypted secret stores, version control, RBAC permissions.
+
+Observability + transparency
+
+Audit logs and log streaming to your SIEM, workflow history, real-time alerts, usage dashboards.
+
+Developer experience
+
+Git-based control, isolated environments, multi-user workflows, workflow diffs.
+
+AI governance
+
+Human-in-the-loop, guardrails, evaluations.
+
+Case study
+
+Huel
+
+Huel saved 1,000 hours with an AI-first culture
+
+"n8n was the big unlock. Tools like ChatGPT and Claude are great, but n8n is the thing that allows you to integrate AI into your work and your processes in a safe and controlled way."
+
+Ollie Scheers
+
+Chief Technology Officer
+
+Read Case Study
+
+Case study
+
+Vodafone
+
+Vodafone delivers £2.2M  security operations win
+
+"n8n provides SOAR capability and workflows in a low-code model, as well as the ability to code for more complex workflows and integrations. It did everything that we wanted, all in one tool."
+
+Claire Van Hinsbergh
+
+Cyber Operations Engineering Manager
+
+Read Case Study
+
+n8n makes complex workflows easy to build, and versatile enough for me to add my own 'secret sauce.'
+
+Danny Melamed
+
+I have found the holy grail of automation.
+
+Luisa Vidal
+
+n8n’s integration with third-party services is absolutely mind-blowing. It’s like a Swiss army knife for automation.
+
+Felix Leber
+
+n8n is the tool that turns 'I have an idea' into 'it's running in production' faster than anything else.
+
+Ric Neves
+
+Anything is possible with n8n. I think the cloud version is great, they are doing amazing stuff.
+
+Robyn Tindall
+
+n8n’s integration with third-party services is absolutely mind-blowing. It’s like a Swiss army knife for automation.
+
+Nanbing
+
+Thank you to the n8n community. I did the beginners course and promptly took an automation WAY beyond my skill level.
+
+Charley Mann
+
+I love the flexibility of n8n and how it lets different applications work together in a single workflow.
+
+Ray Fourie
+
+n8n is the glue that holds many of our systems together.
+
+Paul Cook
+
+I can move fast, go deep when things get complex, and never feel boxed in.
+
+Ali Mazloum
+
+Build workflows the way
+you actually think
+
+Start building
+
+n8n.io
+
+Careers
+
+Hiring
+
+Contact
+
+Press
+
+Brand guidelines
+
+Merch
+
+Legal
+
+Events
+
+In The Loop
+
+Partners
+
+Hire an expert
+
+Affiliate program
+
+Join user tests
+
+Case Studies
+
+AI agent report
+
+n8n alternatives
+
+Education
+
+n8n on SAP
+
+Nod
+
+Labs
+
+Imprint
+
+Security
+
+Privacy
+
+Report a vulnerability
+
+Twitter/X
+
+GitHub
+
+Discord
+
+Linkedin
+
+youtube
+
+© 2026 n8n
+
+All rights reserved.
