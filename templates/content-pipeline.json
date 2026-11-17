@@ -1,0 +1,18 @@
+{
+  "format": "patchbay.board",
+  "version": 1,
+  "name": "Content pipeline",
+  "tiles": [
+    {"id": "draft", "kind": "agent", "name": "Draft post", "explains": "Write a social post", "model": {"provider": "anthropic", "model": "claude-sonnet-4-5"}, "promptIds": ["style"], "maxSteps": 12},
+    {"id": "style", "kind": "context", "name": "Style guide", "explains": "Brand voice and rules", "source": "inline", "content": "Keep it short and punchy."},
+    {"id": "checks", "kind": "verify", "name": "Verify checks", "explains": "Deterministic pre-publish checks", "checks": [{"type": "json_path", "path": "length", "expect": "<=280", "onFail": "block"}]},
+    {"id": "publish-gate", "kind": "approval", "name": "Approve publish", "explains": "Human taps before every publish", "notify": {"channel": "desktop"}},
+    {"id": "publish", "kind": "action", "name": "Publish", "explains": "Publish the post", "risk": "irreversible", "source": {"type": "http", "method": "POST", "url": "https://api.example.com/publish"}}
+  ],
+  "wires": [
+    {"id": "w1", "kind": "permission", "from": "style", "to": "draft", "grant": "read-context"},
+    {"id": "w2", "kind": "data", "from": "draft", "to": "checks"},
+    {"id": "w3", "kind": "data", "from": "checks", "to": "publish-gate"},
+    {"id": "w4", "kind": "permission", "from": "publish-gate", "to": "publish", "grant": "invoke-action"}
+  ]
+}

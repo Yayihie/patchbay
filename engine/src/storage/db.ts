@@ -220,5 +220,28 @@ export class Store {
     return row.n;
   }
 
+  /** Export a board as a portable board file. Never includes vault values. */
+  exportBoard(boardId: string): { id: string; name: string; tiles: unknown[]; wires: unknown[] } {
+    const row = this.db.prepare("SELECT name FROM boards WHERE id=?").get(boardId) as { name: string } | undefined;
+    if (!row) throw new Error(`no board ${boardId}`);
+    const tiles = this.db.prepare("SELECT spec_json FROM tiles WHERE board_id=? ORDER BY id").all(boardId) as { spec_json: string }[];
+    const wires = this.db.prepare("SELECT spec_json FROM wires WHERE board_id=? ORDER BY id").all(boardId) as { spec_json: string }[];
+    return {
+      id: boardId, name: row.name,
+      tiles: tiles.map((t) => JSON.parse(t.spec_json)),
+      wires: wires.map((w) => JSON.parse(w.spec_json)),
+    };
+  }
+
+  /** Export a run with its board, steps and audit trail. Never includes vault values. */
+  exportRun(runId: string): { run: unknown; board: unknown; steps: unknown[]; audit: unknown[] } {
+    const run = this.db.prepare("SELECT id,board_id,status,started_at,finished_at,cost_usd FROM runs WHERE id=?").get(runId) as { id: string; board_id: string; status: string; started_at: string; finished_at: string | null; cost_usd: number | null } | undefined;
+    if (!run) throw new Error(`no run ${runId}`);
+    const steps = this.db.prepare("SELECT step,tile_id,decision,risk,outcome,started_at,finished_at,detail,output_json FROM steps WHERE run_id=? ORDER BY step").all(runId) as unknown[];
+    const audit = this.db.prepare("SELECT step,tile_id,tool,args_hash,args_redacted_json,decision,approver,started_at,finished_at,outcome,detail FROM audit WHERE run_id=? ORDER BY step").all(runId) as unknown[];
+    const board = this.exportBoard(run.board_id);
+    return { run, board, steps, audit };
+  }
+
   close(): void { this.db.close(); }
 }

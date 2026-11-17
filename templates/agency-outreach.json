@@ -1,0 +1,20 @@
+{
+  "format": "patchbay.board",
+  "version": 1,
+  "name": "Agency outreach",
+  "tiles": [
+    {"id": "find", "kind": "action", "name": "Find prospects", "explains": "Search for new leads", "risk": "read", "source": {"type": "http", "method": "GET", "url": "https://api.example.com/leads"}},
+    {"id": "verify", "kind": "verify", "name": "Verify contact", "explains": "Check email is valid", "checks": [{"type": "regex", "path": "email", "pattern": "^[^@]+@[^@]+\\.[^@]+$", "onFail": "block"}]},
+    {"id": "brief", "kind": "prompt", "name": "Outreach brief", "explains": "Standing instructions", "body": "Write a concise outreach email."},
+    {"id": "draft", "kind": "agent", "name": "Draft email", "explains": "Write outreach email", "model": {"provider": "anthropic", "model": "claude-sonnet-4-5"}, "promptIds": ["brief"], "maxSteps": 12},
+    {"id": "send-gate", "kind": "approval", "name": "Approve send", "explains": "Human taps before every send", "notify": {"channel": "desktop"}},
+    {"id": "send", "kind": "action", "name": "Send email", "explains": "Send the drafted email", "risk": "irreversible", "source": {"type": "http", "method": "POST", "url": "https://api.example.com/send"}}
+  ],
+  "wires": [
+    {"id": "w1", "kind": "data", "from": "find", "to": "verify"},
+    {"id": "w2", "kind": "data", "from": "verify", "to": "draft"},
+    {"id": "w3", "kind": "permission", "from": "brief", "to": "draft", "grant": "read-context"},
+    {"id": "w4", "kind": "data", "from": "draft", "to": "send-gate"},
+    {"id": "w5", "kind": "permission", "from": "send-gate", "to": "send", "grant": "invoke-action"}
+  ]
+}

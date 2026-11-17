@@ -1,0 +1,16 @@
+{
+  "format": "patchbay.board",
+  "version": 1,
+  "name": "Research team",
+  "tiles": [
+    {"id": "agent-a", "kind": "agent", "name": "Researcher A", "explains": "Gather sources", "model": {"provider": "openrouter", "model": "moonshotai/kimi-k3"}, "maxSteps": 12},
+    {"id": "agent-b", "kind": "agent", "name": "Researcher B", "explains": "Synthesize findings", "model": {"provider": "openrouter", "model": "moonshotai/kimi-k3"}, "maxSteps": 12},
+    {"id": "verifier", "kind": "verify", "name": "Verifier", "explains": "Cross-check claims", "checks": [{"type": "regex", "path": "claims", "pattern": "\\w+", "onFail": "warn"}]},
+    {"id": "memory-a", "kind": "memory", "name": "Researcher A memory", "explains": "Persistent per-agent memory", "scope": "agent", "writePolicy": "agent-editable", "maxEntries": 500}
+  ],
+  "wires": [
+    {"id": "w1", "kind": "permission", "from": "agent-a", "to": "agent-b", "grant": "handoff-task"},
+    {"id": "w2", "kind": "data", "from": "agent-b", "to": "verifier"},
+    {"id": "w3", "kind": "permission", "from": "memory-a", "to": "agent-a", "grant": "read-context"}
+  ]
+}

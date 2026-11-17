@@ -1,0 +1,20 @@
+{
+  "format": "patchbay.board",
+  "version": 1,
+  "name": "Invoice chaser",
+  "tiles": [
+    {"id": "overdue", "kind": "action", "name": "Overdue invoices", "explains": "List unpaid invoices", "risk": "read", "source": {"type": "http", "method": "GET", "url": "https://api.example.com/invoices?status=overdue"}},
+    {"id": "draft", "kind": "agent", "name": "Draft reminder", "explains": "Write payment reminder", "model": {"provider": "openai", "model": "gpt-5"}, "promptIds": ["reminder-brief"], "maxSteps": 12},
+    {"id": "reminder-brief", "kind": "prompt", "name": "Reminder brief", "explains": "Standing instructions", "body": "Write a polite payment reminder."},
+    {"id": "gate", "kind": "approval", "name": "Approve reminder", "explains": "Human taps before every send", "notify": {"channel": "desktop"}},
+    {"id": "send", "kind": "action", "name": "Send reminder", "explains": "Send the reminder", "risk": "irreversible", "source": {"type": "http", "method": "POST", "url": "https://api.example.com/send"}},
+    {"id": "summary", "kind": "action", "name": "Log summary", "explains": "Record outcome", "risk": "write", "source": {"type": "script", "language": "node", "entry": "summary.js"}}
+  ],
+  "wires": [
+    {"id": "w1", "kind": "data", "from": "overdue", "to": "draft"},
+    {"id": "w2", "kind": "permission", "from": "reminder-brief", "to": "draft", "grant": "read-context"},
+    {"id": "w3", "kind": "data", "from": "draft", "to": "gate"},
+    {"id": "w4", "kind": "permission", "from": "gate", "to": "send", "grant": "invoke-action"},
+    {"id": "w5", "kind": "data", "from": "send", "to": "summary"}
+  ]
+}

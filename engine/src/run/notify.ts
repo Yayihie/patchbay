@@ -77,3 +77,30 @@ export class SmtpTransport implements NotifyTransport {
 export function defaultTransport(): NotifyTransport {
   return new ConsoleDesktopTransport();
 }
+
+/** Spec §7: verify an inbound webhook signature.
+ * Header: X-Patchbay-Signature: t=<unix>,v1=<hex>
+ * Digest: HMAC-SHA256(secret, "<unix>.<raw body>")
+ * Timing-safe comparison; reject timestamps beyond ±300s; fail closed on a
+ * missing or malformed secret/signature. */
+export function verifyWebhookSignature({
+  secret,
+  timestamp,
+  rawBody,
+  signature,
+}: {
+  secret: string; timestamp: number | string; rawBody: string; signature: string;
+}): boolean {
+  if (!secret || secret.length === 0) throw new Error("webhook verification failed closed: no secret configured");
+  const match = /^t=(\d+),v1=([0-9a-f]{64})$/.exec(String(signature));
+  if (!match) throw new Error("webhook verification failed closed: malformed signature");
+  const ts = Number(match[1]!);
+  const provided = match[2]!;
+  const now = Math.floor(Date.now() / 1000);
+  if (Math.abs(now - ts) > 300) throw new Error("webhook verification failed closed: stale timestamp");
+  const expected = crypto.createHmac("sha256", secret).update(`${ts}.${rawBody}`).digest("hex");
+  const providedBuf = Buffer.from(provided, "hex");
+  const expectedBuf = Buffer.from(expected, "hex");
+  if (providedBuf.length !== expectedBuf.length) return false;
+  return crypto.timingSafeEqual(providedBuf, expectedBuf);
+}
