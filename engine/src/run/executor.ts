@@ -1,10 +1,12 @@
-import type { BoardFile, Tile } from "../board/types.js";
+import type { BoardFile, Tile, VerifyCheck } from "../board/types.js";
 import { buildGraph, topoOrder, GraphError } from "../graph/graph.js";
 import type { Store } from "../storage/db.js";
 import type { Enforcer } from "../agents/runner.js";
 import type { NotifyTransport, ApprovalArgs } from "./notify.js";
 import { defaultTransport } from "./notify.js";
 import crypto from "node:crypto";
+import fs from "node:fs/promises";
+import { spawnSync } from "node:child_process";
 
 type ActionSource = { source: { type: string } };
 type RiskyTile = Tile & { risk?: string; autoApprove?: { enabled?: boolean; maxPerHour?: number } };
@@ -131,6 +133,30 @@ export class Executor {
           this.store.saveTrace(crypto.randomUUID(), runId, step, tileId, startedAt, durMs,
             null, null, null, null, null, JSON.stringify({ ok: true }));
           this.store.recordAudit({ runId, step, tileId: tile.id, tool: tile.id, decision: "auto", outcome: "ok", approver: "local-user" });
+        } else if (tile.kind === "verify") {
+          // ---- M6 verify tile: deterministic checks, PASS/FAIL/BLOCKED ---
+          const vTile = tile as { checks?: VerifyCheck[] };
+          const checks = vTile.checks ?? [];
+          const checkResults: { type: string; passed: boolean; detail?: string }[] = [];
+          let anyBlockFailed = false;
+          for (const check of checks) {
+            const r = await this.runCheck(check, args, tileId);
+            checkResults.push(r);
+            if (!r.passed && check.onFail === "block") anyBlockFailed = true;
+          }
+          const durMs = Date.now() - Date.parse(startedAt);
+          step += 1;
+          const outcome = anyBlockFailed ? "blocked" : "ok";
+          const decision = anyBlockFailed ? "blocked" : "auto";
+          outputs[tileId] = { passed: !anyBlockFailed, checks: checkResults };
+          this.store.recordStepWithOutput(runId, step, tileId, decision, outcome, startedAt,
+            outputs[tileId], undefined, undefined);
+          this.store.recordAudit({ runId, step, tileId: tile.id, tool: tile.id, decision, outcome, approver: "local-user" });
+          traces.push({ step, tileId, durationMs: durMs });
+          if (anyBlockFailed) {
+            this.store.setRunStatus(runId, "failed");
+            return { runId, status: "failed", outputs, steps: step };
+          }
         } else {
           // non-action tiles pass their input through (agents arrive in M2, approvals M3)
           const durMs = Date.now() - Date.parse(startedAt);
@@ -279,5 +305,68 @@ export class Executor {
         if (to) { try { await transport.email({ ...a, to }); } catch { /* best effort */ } }
       }
     }
+  }
+
+  /** M6: run one deterministic verify check against assembled args. */
+  private async runCheck(check: VerifyCheck, args: Record<string, unknown>, _tileId: string):
+    Promise<{ type: string; passed: boolean; detail?: string }> {
+    switch (check.type) {
+      case "http_status": {
+        const url = check.url;
+        const expect = check.expect ?? 200;
+        if (!url) return { type: "http_status", passed: false, detail: "http_status check missing url" };
+        try {
+          const res = await fetch(url, { method: "GET", signal: AbortSignal.timeout(10_000) });
+          return { type: "http_status", passed: res.status === expect, detail: `HTTP ${res.status} expected ${expect}` };
+        } catch (e) {
+          return { type: "http_status", passed: false, detail: `http_status failed: ${e instanceof Error ? e.message : String(e)}` };
+        }
+      }
+      case "json_path": {
+        const p = check.path;
+        if (!p) return { type: "json_path", passed: false, detail: "json_path check missing path" };
+        const value = this.getJsonPath(args, p);
+        return { type: "json_path", passed: value !== undefined, detail: `json_path ${p} => ${JSON.stringify(value)}` };
+      }
+      case "file_exists": {
+        const p = check.path;
+        if (!p) return { type: "file_exists", passed: false, detail: "file_exists check missing path" };
+        try {
+          await fs.access(p);
+          return { type: "file_exists", passed: true, detail: `file exists: ${p}` };
+        } catch {
+          return { type: "file_exists", passed: false, detail: `file missing: ${p}` };
+        }
+      }
+      case "regex": {
+        const pattern = check.pattern;
+        if (!pattern) return { type: "regex", passed: false, detail: "regex check missing pattern" };
+        try {
+          const re = new RegExp(pattern);
+          const input = JSON.stringify(args);
+          return { type: "regex", passed: re.test(input), detail: `regex ${pattern} matched input: ${re.test(input)}` };
+        } catch (e) {
+          return { type: "regex", passed: false, detail: `regex failed: ${e instanceof Error ? e.message : String(e)}` };
+        }
+      }
+      case "command_zero_exit": {
+        const cmd = check.command;
+        if (!cmd) return { type: "command_zero_exit", passed: false, detail: "command_zero_exit check missing command" };
+        const result = spawnSync(cmd, [], { stdio: "ignore", encoding: "utf8" });
+        return { type: "command_zero_exit", passed: result.status === 0, detail: `command exited ${result.status ?? -1}` };
+      }
+      default:
+        return { type: String(check.type), passed: false, detail: `unknown check type: ${check.type}` };
+    }
+  }
+
+  /** Navigate a dotted path (e.g. "body.status") through a nested object. */
+  private getJsonPath(obj: Record<string, unknown>, dottedPath: string): unknown {
+    let cur: unknown = obj;
+    for (const part of dottedPath.split(".")) {
+      if (cur === null || cur === undefined || typeof cur !== "object") return undefined;
+      cur = (cur as Record<string, unknown>)[part];
+    }
+    return cur;
   }
 }

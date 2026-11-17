@@ -152,6 +152,35 @@ describe("engine API server", () => {
     }
   });
 
+  it("run replay returns steps + audit without re-executing", async () => {
+    const scriptFile = tempScript('console.log(JSON.stringify({ ok: true }));');
+    try {
+      const created = await req(server, "POST", "/api/v1/boards", {
+        format: "patchbay.board",
+        version: 1,
+        name: "Replay Test",
+        tiles: [
+          { id: "t1", kind: "action", name: "noop", source: { type: "script", language: "node", entry: scriptFile } },
+        ],
+        wires: [],
+      });
+      const boardId = created.body.id;
+
+      const run = await req(server, "POST", `/api/v1/boards/${boardId}/run`);
+      const runId = run.body.runId;
+
+      const replay = await req(server, "GET", `/api/v1/runs/${runId}/replay`);
+      expect(replay.status).toBe(200);
+      expect(replay.body.id).toBe(runId);
+      expect(Array.isArray(replay.body.replay)).toBe(true);
+      expect(replay.body.replay.length).toBeGreaterThan(0);
+      expect(Array.isArray(replay.body.audit)).toBe(true);
+    } finally {
+      try { fs.unlinkSync(scriptFile); } catch { /* ok */ }
+      try { fs.rmdirSync(path.dirname(scriptFile)); } catch { /* ok */ }
+    }
+  });
+
   it("new tables exist: plugins, mcp_cache, traces", () => {
     store.db.exec("INSERT INTO plugins(id,name,version,source_json,created_at) VALUES('p1','test-plugin','1.0.0','{}',datetime('now'))");
     const rows = store.db.prepare("SELECT * FROM plugins WHERE id='p1'").all() as { id: string }[];

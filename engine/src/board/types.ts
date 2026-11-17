@@ -30,6 +30,16 @@ export interface TileBase {
 
 export type Tile = TileBase & Record<string, unknown>;
 
+export interface VerifyCheck {
+  type: "http_status" | "json_path" | "file_exists" | "regex" | "command_zero_exit";
+  url?: string;
+  expect?: number;
+  path?: string;
+  pattern?: string;
+  command?: string;
+  onFail: "block" | "warn";
+}
+
 export interface BoardFile {
   format: "patchbay.board";
   version: 1;

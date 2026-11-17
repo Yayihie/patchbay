@@ -4,11 +4,13 @@
   "name": "Release check",
   "tiles": [
     {"id": "rev", "kind": "action", "name": "Confirm revision", "explains": "Check deployed revision is live", "risk": "read", "source": {"type": "http", "method": "GET", "url": "https://api.example.com/revision"}},
-    {"id": "run-checks", "kind": "action", "name": "Run checks", "explains": "Execute verification checks", "risk": "read", "source": {"type": "script", "language": "node", "entry": "checks.js"}},
+    {"id": "check-status", "kind": "verify", "name": "Check status", "explains": "Verify HTTP 200 on health endpoint", "checks": [{"type": "http_status", "url": "https://api.example.com/health", "expect": 200, "onFail": "block"}]},
+    {"id": "check-content", "kind": "verify", "name": "Check content", "explains": "Verify response contains expected marker", "checks": [{"type": "regex", "path": "body", "pattern": "ok", "onFail": "warn"}]},
     {"id": "result", "kind": "table", "name": "Check results", "explains": "PASS / FAIL / BLOCKED row", "columns": [{"name": "check", "type": "text"}, {"name": "status", "type": "text"}]}
   ],
   "wires": [
-    {"id": "w1", "kind": "data", "from": "rev", "to": "run-checks"},
-    {"id": "w2", "kind": "data", "from": "run-checks", "to": "result"}
+    {"id": "w1", "kind": "data", "from": "rev", "to": "check-status"},
+    {"id": "w2", "kind": "data", "from": "check-status", "to": "check-content"},
+    {"id": "w3", "kind": "data", "from": "check-content", "to": "result"}
   ]
 }

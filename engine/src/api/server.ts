@@ -205,11 +205,31 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
         return;
       }
 
-      // ---- runs/:id/audit ----
+      // ---- runs/:id/audit ---
       if (req.method === "GET" && segments.length === 5 && segments[0] === "api" && segments[1] === "v1" && segments[2] === "runs" && segments[4] === "audit") {
         const id = segments[3]!;
         const audit = store.auditForRun(id);
         json(res, 200, audit);
+        return;
+      }
+
+      // ---- runs/:id/replay (M6 run replay: re-emit audit without re-executing) ----
+      if (req.method === "GET" && segments.length === 5 && segments[0] === "api" && segments[1] === "v1" && segments[2] === "runs" && segments[4] === "replay") {
+        const id = segments[3]!;
+        const run = store.getRun(id);
+        const steps = (store.db.prepare(
+          "SELECT step,tile_id,decision,risk,outcome,started_at,finished_at,detail,output_json FROM steps WHERE run_id=? ORDER BY step"
+        ).all(id) as { step: number; tile_id: string; decision: string; risk: string | null; outcome: string; started_at: string; finished_at: string | null; detail: string | null; output_json: string | null }[]);
+        const audit = store.auditForRun(id);
+        json(res, 200, {
+          id: run.id,
+          board_id: run.board_id,
+          status: run.status,
+          started_at: run.started_at,
+          finished_at: run.finished_at,
+          replay: steps.map(s => ({ ...s, output: s.output_json ? JSON.parse(s.output_json) : undefined })),
+          audit,
+        });
         return;
       }
 
