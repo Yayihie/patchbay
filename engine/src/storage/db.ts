@@ -1,5 +1,6 @@
 import { DatabaseSync } from "node:sqlite";
 import path from "node:path";
+import type { Tile, Wire } from "../board/types.js";
 import os from "node:os";
 import fs from "node:fs";
 
@@ -37,11 +38,12 @@ export class Store {
       CREATE TABLE IF NOT EXISTS runs(
         id TEXT PRIMARY KEY, board_id TEXT NOT NULL REFERENCES boards(id), status TEXT NOT NULL,
         started_at TEXT NOT NULL, finished_at TEXT, cost_usd REAL NOT NULL DEFAULT 0,
+        paused_at TEXT, paused_tile_id TEXT, paused_args_json TEXT,
         owner_id TEXT NOT NULL DEFAULT '${OWNER_ID}');
       CREATE TABLE IF NOT EXISTS steps(
         run_id TEXT NOT NULL REFERENCES runs(id), step INTEGER NOT NULL, tile_id TEXT NOT NULL,
         decision TEXT NOT NULL, risk TEXT, outcome TEXT NOT NULL,
-        started_at TEXT NOT NULL, finished_at TEXT, detail TEXT,
+        started_at TEXT NOT NULL, finished_at TEXT, detail TEXT, output_json TEXT,
         owner_id TEXT NOT NULL DEFAULT '${OWNER_ID}', PRIMARY KEY (run_id, step));
       CREATE TABLE IF NOT EXISTS audit(
         run_id TEXT NOT NULL, step INTEGER NOT NULL, tile_id TEXT NOT NULL, tool TEXT,
@@ -168,6 +170,54 @@ export class Store {
   readTableRows(tableId: string): unknown[] {
     return (this.db.prepare("SELECT data_json FROM table_rows WHERE table_id=? ORDER BY created_at")
       .all(tableId) as { data_json: string }[]).map((r) => JSON.parse(r.data_json));
+  }
+
+  getBoard(boardId: string): { id: string; name: string; tiles: Tile[]; wires: Wire[] } {
+    const row = this.db.prepare("SELECT name, tiles_json, wires_json FROM boards WHERE id=?").get(boardId) as { name: string; tiles_json: string; wires_json: string } | undefined;
+    if (!row) throw new Error(`no board ${boardId}`);
+    return { id: boardId, name: row.name, tiles: JSON.parse(row.tiles_json), wires: JSON.parse(row.wires_json) };
+  }
+
+  getRun(runId: string): { id: string; board_id: string; status: string; started_at: string; finished_at: string | null; paused_tile_id: string | null; paused_args_json: string | null } {
+    const row = this.db.prepare("SELECT id,board_id,status,started_at,finished_at,paused_tile_id,paused_args_json FROM runs WHERE id=?").get(runId) as any;
+    if (!row) throw new Error(`no run ${runId}`);
+    return row;
+  }
+
+  completedSteps(runId: string): Map<string, unknown> {
+    const rows = this.db.prepare("SELECT tile_id, output_json FROM steps WHERE run_id=? AND output_json IS NOT NULL").all(runId) as { tile_id: string; output_json: string }[];
+    const m = new Map<string, unknown>();
+    for (const r of rows) { try { m.set(r.tile_id, JSON.parse(r.output_json)); } catch { /* skip */ } }
+    return m;
+  }
+
+  recordStepWithOutput(runId: string, step: number, tileId: string, decision: string,
+                       outcome: string, startedAt: string, output: unknown, detail?: string, risk?: string): void {
+    this.db.prepare(
+      `INSERT INTO steps(run_id,step,tile_id,decision,risk,outcome,started_at,finished_at,detail,output_json)
+       VALUES(?,?,?,?,?,?,?,?,?,?)`)
+      .run(runId, step, tileId, decision, risk ?? null, outcome, startedAt,
+           new Date().toISOString(), detail ?? null, output === undefined ? null : JSON.stringify(output));
+  }
+
+  pauseRun(runId: string, tileId: string, args: unknown): void {
+    this.db.prepare("UPDATE runs SET status='paused', paused_at=?, paused_tile_id=?, paused_args_json=? WHERE id=?")
+      .run(new Date().toISOString(), tileId, JSON.stringify(args), runId);
+  }
+
+  resumeRun(runId: string, decision: "approve" | "reject" | "auto", approver: string): void {
+    this.db.prepare("UPDATE runs SET status='running', paused_at=NULL, paused_tile_id=NULL, paused_args_json=NULL WHERE id=?")
+      .run(runId);
+    this.recordAudit({
+      runId, step: 0, tileId: "engine", tool: "approval", decision, outcome: decision === "reject" ? "blocked" : "ok",
+      approver, detail: `approval ${decision}`,
+    });
+  }
+
+  autoApprovalsInWindow(tool: string, since: string): number {
+    const row = this.db.prepare(
+      "SELECT COUNT(*) n FROM audit WHERE decision='auto' AND tool=? AND started_at > ?").get(tool, since) as { n: number };
+    return row.n;
   }
 
   close(): void { this.db.close(); }

@@ -150,6 +150,25 @@ export class Enforcer {
       .map((w) => w.to);
   }
 
+  /** M3 §5: does an irreversible action run unattended, pause for a human, or get refused? */
+  actionClearance(action: Tile): { mode: "invoke" | "auto" | "gate" | "refuse"; detail?: string } {
+    const tiles = new Map(this.board.tiles.map((t) => [t.id, t]));
+    const risk = (action as { risk?: string }).risk ?? "irreversible";
+    if (risk !== "irreversible") return { mode: "invoke" };
+    const aa = (action as { autoApprove?: { enabled?: boolean; maxPerHour?: number } }).autoApprove;
+    if (aa?.enabled) {
+      const cap = aa.maxPerHour ?? 10;
+      const since = new Date(Date.now() - cap * 3_600_000).toISOString();
+      const used = this.store.autoApprovalsInWindow(action.id, since);
+      if (used < cap) return { mode: "auto" };
+      return { mode: "gate", detail: `auto-approve rate cap (${cap}/hr) reached for '${action.name}'` };
+    }
+    const hasApproval = this.board.wires.some(
+      (w) => w.kind === "data" && w.to === action.id && tiles.get(w.from)?.kind === "approval");
+    if (hasApproval) return { mode: "gate", detail: `irreversible action '${action.name}' awaits human approval` };
+    return { mode: "refuse", detail: `irreversible action '${action.name}' has no approval gate upstream` };
+  }
+
   private refuse(error: string, detail: string, hint: string): Refusal {
     return { ok: false, error, detail, hint };
   }
