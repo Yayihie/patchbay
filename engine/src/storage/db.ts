@@ -59,6 +59,19 @@ export class Store {
       CREATE TABLE IF NOT EXISTS table_rows(
         id TEXT PRIMARY KEY, table_id TEXT NOT NULL REFERENCES tables(id), data_json TEXT NOT NULL,
         created_at TEXT NOT NULL, updated_at TEXT NOT NULL, owner_id TEXT NOT NULL DEFAULT '${OWNER_ID}');
+      CREATE TABLE IF NOT EXISTS plugins(
+        id TEXT PRIMARY KEY, name TEXT NOT NULL, version TEXT NOT NULL,
+        source_json TEXT NOT NULL, integrity_hash TEXT,
+        created_at TEXT NOT NULL, owner_id TEXT NOT NULL DEFAULT '${OWNER_ID}');
+      CREATE TABLE IF NOT EXISTS mcp_cache(
+        server_id TEXT NOT NULL, tool_name TEXT NOT NULL, schema_json TEXT NOT NULL,
+        fetched_at TEXT NOT NULL, owner_id TEXT NOT NULL DEFAULT '${OWNER_ID}',
+        PRIMARY KEY (server_id, tool_name));
+      CREATE TABLE IF NOT EXISTS traces(
+        id TEXT PRIMARY KEY, run_id TEXT NOT NULL, step INTEGER NOT NULL, tile_id TEXT NOT NULL,
+        started_at TEXT NOT NULL, duration_ms INTEGER, prompt_tokens INTEGER,
+        completion_tokens INTEGER, cost_usd REAL, provider TEXT, model TEXT,
+        detail_json TEXT, owner_id TEXT NOT NULL DEFAULT '${OWNER_ID}');
     `);
   }
 
@@ -173,13 +186,19 @@ export class Store {
   }
 
   getBoard(boardId: string): { id: string; name: string; tiles: Tile[]; wires: Wire[] } {
-    const row = this.db.prepare("SELECT name, tiles_json, wires_json FROM boards WHERE id=?").get(boardId) as { name: string; tiles_json: string; wires_json: string } | undefined;
+    const row = this.db.prepare("SELECT name FROM boards WHERE id=?").get(boardId) as { name: string } | undefined;
     if (!row) throw new Error(`no board ${boardId}`);
-    return { id: boardId, name: row.name, tiles: JSON.parse(row.tiles_json), wires: JSON.parse(row.wires_json) };
+    const tiles = (this.db.prepare(
+      "SELECT spec_json FROM tiles WHERE board_id=? ORDER BY id"
+    ).all(boardId) as { spec_json: string }[]).map(r => JSON.parse(r.spec_json));
+    const wires = (this.db.prepare(
+      "SELECT spec_json FROM wires WHERE board_id=? ORDER BY id"
+    ).all(boardId) as { spec_json: string }[]).map(r => JSON.parse(r.spec_json));
+    return { id: boardId, name: row.name, tiles, wires };
   }
 
   getRun(runId: string): { id: string; board_id: string; status: string; started_at: string; finished_at: string | null; paused_tile_id: string | null; paused_args_json: string | null } {
-    const row = this.db.prepare("SELECT id,board_id,status,started_at,finished_at,paused_tile_id,paused_args_json FROM runs WHERE id=?").get(runId) as any;
+    const row = this.db.prepare("SELECT id,board_id,status,started_at,finished_at,paused_tile_id,paused_args_json FROM runs WHERE id=?").get(runId) as { id: string; board_id: string; status: string; started_at: string; finished_at: string | null; paused_tile_id: string | null; paused_args_json: string | null } | undefined;
     if (!row) throw new Error(`no run ${runId}`);
     return row;
   }

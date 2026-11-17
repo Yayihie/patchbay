@@ -10,3 +10,5 @@ export type { Resolution, Refusal, AgentIntent, AgentRunDeps } from "./agents/ru
 export { Vault } from "./vault/vault.js";
 export { chat } from "./providers/index.js";
 export type { RunResult, RunContext, ExecutableAction } from "./run/executor.js";
+export { createServer } from "./api/server.js";
+export type { ServerDeps } from "./api/server.js";
