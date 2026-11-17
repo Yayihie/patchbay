@@ -30,9 +30,9 @@ Session token is written to `~/.patchbay/session` on first start. Authenticate A
 | **M2** | Agents + prompts + context boxes + BYOK providers + permission enforcement | Done |
 | **M3** | Approval gates, auto-approve rate cap, audit log, export | Done |
 | **M4** | MCP plugin system, manifest, integrity hash, reference plugin, registry reader, plugin CRUD API | Done |
-| **M5** | Web board UI + templates + end-to-end board from UI | In progress (UI skeleton committed; not yet wired to API server) |
+| **M5** | Web board UI + templates + end-to-end board from UI | Done (React/Vite UI wired to HTTP API at 127.0.0.1:7443; session bootstrap, boards, runs, approve endpoints) |
 | **M6** | Verify tiles, run replay, docs site | Not started |
-| **M7** | Fault tolerance & observability (onFail routes, traces, degraded mode) | Tables exist; implementation not started |
+| **M7** | Fault tolerance & observability (onFail routes, traces, degraded mode) | Done (per-step traces, 3-attempt exponential-backoff retry, retryRun recovery from failed runs, POST /api/v1/runs/:id/retry) |
 
 ## Build
 

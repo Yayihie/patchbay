@@ -78,6 +78,15 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
       return;
     }
 
+    const url = new URL(req.url ?? "/", `http://${HOST}`);
+    const segments = url.pathname.split("/").filter(Boolean);
+
+    // ---- session bootstrap (loopback-only, no auth needed) ----
+    if (req.method === "GET" && segments.join("/") === "api/v1/session") {
+      json(res, 200, { token });
+      return;
+    }
+
     // ---- session auth (loopback-only engine, SPEC §11) ----
     const auth = req.headers["authorization"];
     if (!auth || !auth.startsWith("Bearer ")) {
@@ -89,17 +98,13 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
       return;
     }
 
+    // ---- health (auth required) ----
+    if (req.method === "GET" && segments.join("/") === "api/v1/health") {
+      json(res, 200, { ok: true, version: ENGINE_VERSION });
+      return;
+    }
+
     try {
-      const url = new URL(req.url ?? "/", `http://${HOST}`);
-      const pathname = url.pathname;
-      const segments = pathname.split("/").filter(Boolean); // ["api","v1","boards","id","run"]
-
-      // ---- health ----
-      if (req.method === "GET" && segments.join("/") === "api/v1/health") {
-        json(res, 200, { ok: true, version: ENGINE_VERSION });
-        return;
-      }
-
       // ---- boards list / create ----
       if (segments.join("/") === "api/v1/boards") {
         if (req.method === "GET") {
@@ -124,10 +129,10 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
         const b = store.getBoard(id);
         json(res, 200, { id, name: b.name, tiles: b.tiles, wires: b.wires });
         return;
-        }
+      }
 
-        // ---- boards/:id/run ----
-        if (req.method === "POST" && segments.length === 5 && segments[0] === "api" && segments[1] === "v1" && segments[2] === "boards" && segments[4] === "run") {
+      // ---- boards/:id/run ----
+      if (req.method === "POST" && segments.length === 5 && segments[0] === "api" && segments[1] === "v1" && segments[2] === "boards" && segments[4] === "run") {
         const id = segments[3]!;
         const b = store.getBoard(id);
         const board: BoardFile = {
@@ -183,6 +188,23 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
         return;
       }
 
+      // ---- runs/:id/retry (M7 fault tolerance) ----
+      if (req.method === "POST" && segments.length === 5 && segments[0] === "api" && segments[1] === "v1" && segments[2] === "runs" && segments[4] === "retry") {
+        const id = segments[3]!;
+        const run = store.getRun(id);
+        const b3 = store.getBoard(run.board_id);
+        const board3: BoardFile = {
+          format: "patchbay.board",
+          version: 1,
+          name: b3.name,
+          tiles: b3.tiles,
+          wires: b3.wires,
+        };
+        const result = await executor.retryRun(board3, id, id);
+        json(res, 200, { runId: id, status: result.status, steps: result.steps, traces: result.traces });
+        return;
+      }
+
       // ---- runs/:id/audit ----
       if (req.method === "GET" && segments.length === 5 && segments[0] === "api" && segments[1] === "v1" && segments[2] === "runs" && segments[4] === "audit") {
         const id = segments[3]!;
@@ -208,7 +230,7 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
         }
         if (req.method === "POST") {
           const body = await readBody(req);
-          const { command, url, manifestRef } = body as { command?: string[]; url?: string; manifestRef?: string };
+          const { command, url: urlParam, manifestRef } = body as { command?: string[]; url?: string; manifestRef?: string };
 
           let manifest: PluginManifest | undefined;
           if (manifestRef) {
@@ -216,7 +238,7 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
           }
 
           const transport = command ? "stdio" : "http";
-          const cmd = command ?? (url ? [url] : []);
+          const cmd = command ?? (urlParam ? [urlParam] : []);
 
           const client = new McpClient(cmd);
           await client.connect();
@@ -233,10 +255,10 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
           const id = crypto.randomUUID();
           const sourceJson = pluginSource(manifest, tools);
           const ih = transport === "stdio" && cmd.length > 0 ? integrityHash(cmd) : null;
-          store.savePlugin(id, manifest?.name ?? (url ?? "plugin"), manifest?.version ?? "1.0.0", sourceJson, ih);
+          store.savePlugin(id, manifest?.name ?? (urlParam ?? "plugin"), manifest?.version ?? "1.0.0", sourceJson, ih);
           store.saveMcpCache(id, "__all__", JSON.stringify(mcpTools));
 
-          json(res, 201, { id, name: manifest?.name ?? (url ?? "plugin"), tools: tools.length });
+          json(res, 201, { id, name: manifest?.name ?? (urlParam ?? "plugin"), tools: tools.length });
           return;
         }
       }

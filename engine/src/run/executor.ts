@@ -4,6 +4,7 @@ import type { Store } from "../storage/db.js";
 import type { Enforcer } from "../agents/runner.js";
 import type { NotifyTransport, ApprovalArgs } from "./notify.js";
 import { defaultTransport } from "./notify.js";
+import crypto from "node:crypto";
 
 type ActionSource = { source: { type: string } };
 type RiskyTile = Tile & { risk?: string; autoApprove?: { enabled?: boolean; maxPerHour?: number } };
@@ -15,6 +16,7 @@ export interface RunResult {
   steps: number;
   pausedTileId?: string;
   pendingArgs?: unknown;
+  traces?: { step: number; tileId: string; durationMs: number }[];
 }
 
 export interface RunContext {
@@ -57,6 +59,7 @@ export class Executor {
     const runId = this.store.newRun(boardId);
     const outputs: Record<string, unknown> = { ...(ctx.inputs ?? {}) };
     let step = 0;
+    const traces: { step: number; tileId: string; durationMs: number }[] = [];
     try {
       for (const tileId of order) {
         const tile = board.tiles.find((t) => t.id === tileId);
@@ -92,19 +95,51 @@ export class Executor {
             // mode === "auto": execute unattended; rate cap already checked by enforcer
           }
 
-          const result = await this.actionRunner(tile, args);
+          // ---- M7 fault tolerance: retry with exponential backoff on transient failure ----
+          const maxRetries = 3;
+          let lastErr: unknown;
+          let attempt = 0;
+          let result: unknown;
+          for (;;) {
+            attempt += 1;
+            const t0 = Date.now();
+            try {
+              result = await this.actionRunner(tile, args);
+              break;
+            } catch (e) {
+              lastErr = e;
+              const dur = Date.now() - t0;
+              this.store.saveTrace(crypto.randomUUID(), runId, step + 1, tileId, startedAt, dur,
+                null, null, null, null, null, JSON.stringify({ error: e instanceof Error ? e.message : String(e), attempt }));
+              if (attempt >= maxRetries) {
+                step += 1;
+                this.store.recordStep(runId, step, tileId, "auto", "error", new Date().toISOString(),
+                  `failed after ${maxRetries} attempts: ${e instanceof Error ? e.message : String(e)}`);
+                this.store.setRunStatus(runId, "failed");
+                return { runId, status: "failed", outputs, steps: step };
+              }
+              // backoff: 250ms, 500ms, 1000ms
+              await new Promise(r => setTimeout(r, 250 * Math.pow(2, attempt - 1)));
+            }
+          }
+          const durMs = Date.now() - Date.parse(startedAt);
           outputs[tileId] = result;
           step += 1;
+          traces.push({ step, tileId, durationMs: durMs });
           this.store.recordStepWithOutput(runId, step, tileId, "auto", "ok", startedAt, result,
             undefined, risky.risk);
+          this.store.saveTrace(crypto.randomUUID(), runId, step, tileId, startedAt, durMs,
+            null, null, null, null, null, JSON.stringify({ ok: true }));
           this.store.recordAudit({ runId, step, tileId: tile.id, tool: tile.id, decision: "auto", outcome: "ok", approver: "local-user" });
         } else {
           // non-action tiles pass their input through (agents arrive in M2, approvals M3)
+          const durMs = Date.now() - Date.parse(startedAt);
+          traces.push({ step, tileId, durationMs: durMs });
           outputs[tileId] = args;
         }
       }
       this.store.setRunStatus(runId, "completed");
-      return { runId, status: "completed", outputs, steps: step };
+      return { runId, status: "completed", outputs, steps: step, traces };
     } catch (e) {
       const detail = e instanceof Error ? e.message : String(e);
       step += 1;
@@ -169,6 +204,64 @@ export class Executor {
     }
     this.store.setRunStatus(runId, "completed");
     return { runId, status: "completed", outputs, steps: step };
+  }
+
+  /** M7 fault tolerance: resume a failed run from its last completed step.
+   * Replays persisted outputs so each action runs exactly once, then continues
+   * from the first uncompleted step in topo order. Returns 'failed' if no
+   * steps were ever completed (nothing to recover from). */
+  async retryRun(board: BoardFile, boardId: string, runId: string): Promise<RunResult> {
+    const run = this.store.getRun(runId);
+    if (run.status === "completed") {
+      return { runId, status: "completed", outputs: {}, steps: 0 };
+    }
+    if (run.status === "running" || run.status === "paused") {
+      throw new Error(`run ${runId} is ${run.status}, not failed; nothing to retry`);
+    }
+
+    const graph = buildGraph(board);
+    const order = topoOrder(board);
+    const completed = this.store.completedSteps(runId); // tileId -> output
+    if (completed.size === 0) {
+      return { runId, status: "failed", outputs: {}, steps: 0 };
+    }
+    const outputs: Record<string, unknown> = { ...completed };
+    // continue step numbering after the last existing step (failed runs may
+    // have recorded error steps for tiles we're about to redo)
+    const maxStepRow = this.store.db.prepare(
+      "SELECT MAX(step) m FROM steps WHERE run_id=?"
+    ).get(runId) as { m: number | null };
+    let step = (maxStepRow.m ?? 0);
+    const traces: { step: number; tileId: string; durationMs: number }[] = [];
+
+    for (const tileId of order) {
+      if (completed.has(tileId)) continue; // already executed; output persisted, never re-run
+      const tile = board.tiles.find((t) => t.id === tileId);
+      if (!tile) throw new GraphError(`missing tile ${tileId}`);
+      const startedAt = new Date().toISOString();
+      const args = this.assembleArgs(graph, tileId, outputs);
+
+      if (tile.kind === "action") {
+        const spec = (tile as unknown as ActionSource).source;
+        if (!spec) throw new GraphError(`action tile ${tileId} has no source`);
+        const result = await this.actionRunner(tile, args);
+        const durMs = Date.now() - Date.parse(startedAt);
+        outputs[tileId] = result;
+        step += 1;
+        traces.push({ step, tileId, durationMs: durMs });
+        this.store.recordStepWithOutput(runId, step, tileId, "auto", "ok", startedAt, result,
+          undefined, (tile as { risk?: string }).risk);
+        this.store.saveTrace(crypto.randomUUID(), runId, step, tileId, startedAt, durMs,
+          null, null, null, null, null, JSON.stringify({ ok: true, retried: true }));
+        this.store.recordAudit({ runId, step, tileId: tile.id, tool: tile.id, decision: "auto", outcome: "ok", approver: "local-user" });
+      } else {
+        const durMs = Date.now() - Date.parse(startedAt);
+        traces.push({ step, tileId, durationMs: durMs });
+        outputs[tileId] = args;
+      }
+    }
+    this.store.setRunStatus(runId, "completed");
+    return { runId, status: "completed", outputs, steps: step, traces };
   }
 
   private async desktopNotify(a: ApprovalArgs): Promise<void> {

@@ -30,6 +30,7 @@ export interface TileBase {
 export type Tile = TileBase & Record<string, unknown>;
 
 export interface BoardFile {
+  id?: string;
   format: "patchbay.board";
   version: 1;
   name: string;
