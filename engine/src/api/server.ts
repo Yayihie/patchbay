@@ -12,6 +12,8 @@ import { defaultTransport } from "../run/notify.js";
 import type { NotifyTransport } from "../run/notify.js";
 import type { BoardFile } from "../board/types.js";
 import { parseBoard } from "../board/parse.js";
+import { McpClient } from "../plugins/mcp/client.js";
+import { loadManifest, integrityHash, toolRisk, pluginSource, type PluginManifest, type PluginTool } from "../plugins/mcp/manifest.js";
 
 const DEFAULT_PORT = 7443;
 const HOST = "127.0.0.1";
@@ -186,6 +188,81 @@ export function createServer(deps: ServerDeps, port = DEFAULT_PORT): http.Server
         const id = segments[3]!;
         const audit = store.auditForRun(id);
         json(res, 200, audit);
+        return;
+      }
+
+      // ---- runs/:id/export ----
+      if (req.method === "GET" && segments.length === 5 && segments[0] === "api" && segments[1] === "v1" && segments[2] === "runs" && segments[4] === "export") {
+        const id = segments[3]!;
+        const exportData = store.exportRun(id);
+        json(res, 200, exportData);
+        return;
+      }
+
+      // ---- plugins list / add ----
+      if (segments.join("/") === "api/v1/plugins") {
+        if (req.method === "GET") {
+          const plugins = store.getPlugins().map(p => ({...JSON.parse(p.source_json), id: p.id, integrityHash: p.integrity_hash}));
+          json(res, 200, plugins);
+          return;
+        }
+        if (req.method === "POST") {
+          const body = await readBody(req);
+          const { command, url, manifestRef } = body as { command?: string[]; url?: string; manifestRef?: string };
+
+          let manifest: PluginManifest | undefined;
+          if (manifestRef) {
+            manifest = await loadManifest(manifestRef);
+          }
+
+          const transport = command ? "stdio" : "http";
+          const cmd = command ?? (url ? [url] : []);
+
+          const client = new McpClient(cmd);
+          await client.connect();
+          const mcpTools = await client.listTools();
+          client.close();
+
+          const tools: PluginTool[] = mcpTools.map(t => ({
+            name: t.name,
+            description: t.description ?? "",
+            risk: toolRisk(t.name, manifest),
+            source: "mcp",
+          }));
+
+          const id = crypto.randomUUID();
+          const sourceJson = pluginSource(manifest, tools);
+          const ih = transport === "stdio" && cmd.length > 0 ? integrityHash(cmd) : null;
+          store.savePlugin(id, manifest?.name ?? (url ?? "plugin"), manifest?.version ?? "1.0.0", sourceJson, ih);
+          store.saveMcpCache(id, "__all__", JSON.stringify(mcpTools));
+
+          json(res, 201, { id, name: manifest?.name ?? (url ?? "plugin"), tools: tools.length });
+          return;
+        }
+      }
+
+      // ---- plugins/:id/refresh ----
+      if (req.method === "POST" && segments.length === 5 && segments[0] === "api" && segments[1] === "v1" && segments[2] === "plugins" && segments[4] === "refresh") {
+        const id = segments[3]!;
+        const p = store.getPlugin(id);
+        if (!p) { json(res, 404, { error: "plugin not found" }); return; }
+        const src = JSON.parse(p.source_json) as { manifest?: PluginManifest; tools: PluginTool[] };
+        const manifest = src.manifest;
+        const cmd = manifest?.transport === "stdio" && manifest.command ? manifest.command : [];
+        const client = new McpClient(cmd);
+        await client.connect();
+        const mcpTools = await client.listTools();
+        client.close();
+
+        const tools: PluginTool[] = mcpTools.map(t => ({
+          name: t.name,
+          description: t.description ?? "",
+          risk: toolRisk(t.name, manifest),
+          source: "mcp",
+        }));
+        store.savePlugin(id, manifest?.name ?? p.name, manifest?.version ?? p.version, pluginSource(manifest, tools), p.integrity_hash);
+        store.saveMcpCache(id, "__all__", JSON.stringify(mcpTools));
+        json(res, 200, { id, tools: tools.length });
         return;
       }
 

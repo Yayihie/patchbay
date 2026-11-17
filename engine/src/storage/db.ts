@@ -3,6 +3,7 @@ import path from "node:path";
 import type { Tile, Wire } from "../board/types.js";
 import os from "node:os";
 import fs from "node:fs";
+import crypto from "node:crypto";
 
 export function patchbayHome(): string {
   return process.env.PATCHBAY_HOME ?? path.join(os.homedir(), ".patchbay");
@@ -263,4 +264,66 @@ export class Store {
   }
 
   close(): void { this.db.close(); }
+
+  /* ── Plugin management (SPEC §6, §11) ── */
+
+  savePlugin(id: string, name: string, version: string,
+             sourceJson: string, integrityHash: string | null): void {
+    this.db.prepare(
+      `INSERT INTO plugins(id,name,version,source_json,integrity_hash,created_at)
+       VALUES(?,?,?,?,?,?)`)
+      .run(id, name, version, sourceJson, integrityHash, new Date().toISOString());
+  }
+
+  getPlugins(): { id: string; name: string; version: string; source_json: string; integrity_hash: string | null; created_at: string }[] {
+    return this.db.prepare(
+      "SELECT id,name,version,source_json,integrity_hash,created_at FROM plugins ORDER BY created_at DESC")
+      .all() as { id: string; name: string; version: string; source_json: string; integrity_hash: string | null; created_at: string }[];
+  }
+
+  getPlugin(id: string): { id: string; name: string; version: string; source_json: string; integrity_hash: string | null; created_at: string } | undefined {
+    return this.db.prepare(
+      "SELECT id,name,version,source_json,integrity_hash,created_at FROM plugins WHERE id=?")
+      .get(id) as { id: string; name: string; version: string; source_json: string; integrity_hash: string | null; created_at: string } | undefined;
+  }
+
+  deletePlugin(id: string): void {
+    this.db.prepare("DELETE FROM plugins WHERE id=?").run(id);
+  }
+
+  /* ── MCP tool schema cache ── */
+
+  saveMcpCache(serverId: string, toolName: string, schemaJson: string): void {
+    this.db.prepare(
+      `INSERT INTO mcp_cache(server_id,tool_name,schema_json,fetched_at)
+       VALUES(?,?,?,?)
+       ON CONFLICT(server_id,tool_name) DO UPDATE SET
+         schema_json=excluded.schema_json, fetched_at=excluded.fetched_at`)
+      .run(serverId, toolName, schemaJson, new Date().toISOString());
+  }
+
+  getMcpCache(serverId: string): { server_id: string; tool_name: string; schema_json: string; fetched_at: string }[] {
+    return this.db.prepare(
+      "SELECT server_id,tool_name,schema_json,fetched_at FROM mcp_cache WHERE server_id=?")
+      .all(serverId) as { server_id: string; tool_name: string; schema_json: string; fetched_at: string }[];
+  }
+
+  /* ── Traces (fault tolerance & observability, SPEC §19) ── */
+
+  saveTrace(id: string, runId: string, step: number, tileId: string, startedAt: string,
+            durationMs: number | null, promptTokens: number | null, completionTokens: number | null,
+            costUsd: number | null, provider: string | null, model: string | null, detailJson: string | null): void {
+    this.db.prepare(
+      `INSERT INTO traces(id,run_id,step,tile_id,started_at,duration_ms,prompt_tokens,
+                           completion_tokens,cost_usd,provider,model,detail_json)
+       VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`)
+      .run(id, runId, step, tileId, startedAt, durationMs, promptTokens,
+           completionTokens, costUsd, provider, model, detailJson);
+  }
+
+  getTraces(runId: string): { id: string; run_id: string; step: number; tile_id: string; started_at: string; duration_ms: number | null; prompt_tokens: number | null; completion_tokens: number | null; cost_usd: number | null; provider: string | null; model: string | null; detail_json: string | null }[] {
+    return this.db.prepare(
+      "SELECT * FROM traces WHERE run_id=? ORDER BY step")
+      .all(runId) as { id: string; run_id: string; step: number; tile_id: string; started_at: string; duration_ms: number | null; prompt_tokens: number | null; completion_tokens: number | null; cost_usd: number | null; provider: string | null; model: string | null; detail_json: string | null }[];
+  }
 }

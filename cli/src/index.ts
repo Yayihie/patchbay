@@ -19,9 +19,7 @@ Usage:
 if (cmd === "--version" || cmd === "version") {
   console.log(ENGINE_VERSION);
   process.exit(0);
-}
-
-if (cmd === "board" && rest[0] === "validate") {
+} else if (cmd === "board" && rest[0] === "validate") {
   const file = rest[1];
   if (!file) {
     console.error("error: board validate requires a file path");
@@ -45,9 +43,7 @@ if (cmd === "board" && rest[0] === "validate") {
     }
     throw e;
   }
-}
-
-if (cmd === "serve") {
+} else if (cmd === "serve") {
   const port = rest[0] ? Number(rest[0]) : 7443;
   if (Number.isNaN(port)) {
     console.error("error: serve requires a numeric port");
@@ -58,6 +54,6 @@ if (cmd === "serve") {
   process.on("SIGINT", () => { server.close(); process.exit(0); });
   process.on("SIGTERM", () => { server.close(); process.exit(0); });
   // keep process alive serving; no process.exit here
+} else {
+  usage();
 }
-
-usage();
